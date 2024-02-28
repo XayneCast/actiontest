@@ -104,8 +104,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, this.__getContentSha(owner, repository, filepath)];
                     case 1:
                         fileSha = _a.sent();
-                        console.log(fileSha);
-                        process.stderr.write(fileSha);
                         return [2 /*return*/, axios_1.default.put("".concat(GithubInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), {
                                 owner: owner,
                                 repo: repository,
@@ -145,7 +143,7 @@ var GithubParameters = /** @class */ (function () {
 }());
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var token, api;
+        var token, api, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -156,13 +154,18 @@ function main() {
                     console.log('Creating Github API connection');
                     api = new GithubAPI(token);
                     console.log('Github API connection created !');
-                    //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
-                    //console.log(content);
-                    return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md')];
+                    _a.label = 1;
                 case 1:
-                    //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
-                    //console.log(content);
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md')];
+                case 2:
                     _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [3 /*break*/, 4];
+                case 4:
                     console.log('Exiting main !');
                     return [2 /*return*/];
             }

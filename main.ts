@@ -70,9 +70,6 @@ class GithubAPI {
 		try {
 			const fileSha = await this.__getContentSha(owner, repository, filepath);
 
-			console.log(fileSha);
-			process.stderr.write(fileSha);
-
 			return axios.put(`${GithubInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
 				{
 					owner: owner,
@@ -117,7 +114,11 @@ async function main(): Promise<void> {
 
 	//const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
 	//console.log(content);
-	await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
+	try {
+		await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
+	} catch(error) {
+		console.log(error);
+	}
 
 	console.log('Exiting main !');
 }
