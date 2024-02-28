@@ -103,7 +103,7 @@ async function main(): Promise<void> {
 
 	const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
 	console.log(content);
-	await api.updateFile('LMAO !', 'xaynecast', 'test', 'test.md');
+	await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
 }
 
 main();
