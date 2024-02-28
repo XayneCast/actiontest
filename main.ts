@@ -101,8 +101,8 @@ async function main(): Promise<void> {
 	const token = GithubParameters.getParameter('secret_token');
 	const api = new GithubAPI(token);
 
-	const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
-	console.log(content);
+	//const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
+	//console.log(content);
 	await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
 }
 
