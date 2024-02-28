@@ -162,6 +162,7 @@ var GithubAPI = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
                         data = _b.sent();
+                        console.log("DATA RETRIEVED FROM ITEM ID: ".concat(data));
                         options = {
                             owner: owner,
                             repo: repository,
@@ -228,7 +229,7 @@ function main() {
                     return [4 /*yield*/, api.getItem('xaynecast', 'actiontest', 'test.md')];
                 case 1:
                     content = _a.sent();
-                    console.log(content.data);
+                    console.log("DATA RETRIEVED FROM ITEM ID: ".concat(content));
                     return [4 /*yield*/, api.updateItem(value, 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();
