@@ -12,7 +12,7 @@ jobs:
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
     - name: 'Update changelog'
-      uses: 'changelog-updater'
+      uses: './action.yml'
       with:
         github_token: '${{ secrets.GITHUB_TOKEN }}'
         changelog_path: './CHANGELOG.md'
