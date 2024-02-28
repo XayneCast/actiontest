@@ -98,16 +98,21 @@ class GithubParameters {
 }
 
 async function main(): Promise<void> {
-	console.log('Starting main ...');
+	console.log('Entering main ...');
 
 	console.log('Getting secret token ...');
 	const token = GithubParameters.getParameter('secret_token');
-	console.log(`Secret token retrieved: ${token}`);
+	console.log(`Secret token retrieved: ${token} !`);
+
+	console.log('Creating Github API connection');
 	const api = new GithubAPI(token);
+	console.log('Github API connection created !');
 
 	//const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
 	//console.log(content);
 	await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
+
+	console.log('Exiting main !');
 }
 
 main();
