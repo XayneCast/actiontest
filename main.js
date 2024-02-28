@@ -156,14 +156,12 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.updateItem = function (content, owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, fileId, options, response, _a;
+            var data, options, response, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
                         data = _b.sent();
-                        console.log(data);
-                        fileId = data.data.sha.slice(3, -1);
                         options = {
                             owner: owner,
                             repo: repository,
@@ -174,7 +172,7 @@ var GithubAPI = /** @class */ (function () {
                                 email: 'octocat@github.com'
                             },
                             content: Buffer.from(content).toString('base64'),
-                            sha: fileId
+                            sha: data.data.sha
                         };
                         _b.label = 2;
                     case 2:

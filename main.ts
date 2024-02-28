@@ -121,8 +121,7 @@ class GithubAPI {
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data = await this.__getItemId(owner, repository, filepath);
-		console.log(data);
-		const fileId = data.data.sha.slice(3, -1);
+
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
@@ -133,7 +132,7 @@ class GithubAPI {
 				email: 'octocat@github.com'
 			},
 			content: Buffer.from(content).toString('base64'),
-			sha: fileId
+			sha: data.data.sha
 		};
 
 		try {
