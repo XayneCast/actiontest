@@ -98,9 +98,11 @@ class GithubParameters {
 }
 
 async function main(): Promise<void> {
-	console.log("Starting main ...");
+	console.log('Starting main ...');
 
+	console.log('Getting secret token ...');
 	const token = GithubParameters.getParameter('secret_token');
+	console.log(`Secret token retrieved: ${token}`);
 	const api = new GithubAPI(token);
 
 	//const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
