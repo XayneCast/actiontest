@@ -136,18 +136,18 @@ var GithubParameters = /** @class */ (function () {
 }());
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var token, api, content;
+        var token, api;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    token = GithubParameters.getParameter('SECRET_TOKEN');
+                    token = GithubParameters.getParameter('secret_token');
                     api = new GithubAPI(token);
-                    return [4 /*yield*/, api.getFileContent('xaynecast', 'test', 'test.md')];
+                    //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
+                    //console.log(content);
+                    return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md')];
                 case 1:
-                    content = _a.sent();
-                    console.log(content);
-                    return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'test', 'test.md')];
-                case 2:
+                    //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
+                    //console.log(content);
                     _a.sent();
                     return [2 /*return*/];
             }
