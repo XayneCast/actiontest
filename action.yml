@@ -3,8 +3,8 @@ author: 'xaynecast'
 description: 'Automatically updates a markdown file with the specified values to a repository'
 
 inputs:
-  file_path:
-    description: 'Path of the file to use'
+  secret_token:
+    description: 'Token to use for the operations'
     required: true
 
 runs:
