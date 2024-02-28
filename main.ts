@@ -94,7 +94,7 @@ class GithubAPI {
 				sha: response.headers.etag.sha
 			};
 		} catch(error) {
-			switch(error.status) {
+			switch(error.response.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
 				case 404 :
@@ -121,7 +121,7 @@ class GithubAPI {
 				}
 			};
 		} catch(error) {
-			switch(error.status) {
+			switch(error.response.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
 				case 404 :
@@ -134,6 +134,8 @@ class GithubAPI {
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
+		console.log('SHA is: ' + data.sha);
+
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
@@ -156,7 +158,7 @@ class GithubAPI {
 		} catch(error) {
 			console.log(error);
 
-			switch(error.status) {
+			switch(error.response.status) {
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
 				case 409 :

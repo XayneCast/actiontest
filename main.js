@@ -116,7 +116,7 @@ var GithubAPI = /** @class */ (function () {
                             }];
                     case 2:
                         error_1 = _a.sent();
-                        switch (error_1.status) {
+                        switch (error_1.response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
                             case 404:
@@ -150,7 +150,7 @@ var GithubAPI = /** @class */ (function () {
                             }];
                     case 2:
                         error_2 = _a.sent();
-                        switch (error_2.status) {
+                        switch (error_2.response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
                             case 404:
@@ -172,6 +172,7 @@ var GithubAPI = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
                         data = _a.sent();
+                        console.log('SHA is: ' + data.sha);
                         options = {
                             owner: owner,
                             repo: repository,
@@ -192,7 +193,7 @@ var GithubAPI = /** @class */ (function () {
                     case 4:
                         error_3 = _a.sent();
                         console.log(error_3);
-                        switch (error_3.status) {
+                        switch (error_3.response.status) {
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             case 409:
