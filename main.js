@@ -116,6 +116,7 @@ var GithubAPI = /** @class */ (function () {
                         response = _b.sent();
                         _b.label = 4;
                     case 4:
+                        console.log(response);
                         switch (response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
@@ -136,7 +137,7 @@ var GithubAPI = /** @class */ (function () {
             });
         });
     };
-    GithubAPI.prototype._getItemId = function (owner, repository, filepath) {
+    GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
@@ -155,7 +156,7 @@ var GithubAPI = /** @class */ (function () {
             var fileId, options, response, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this._getItemId(owner, repository, filepath)];
+                    case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
                         fileId = _b.sent();
                         options = {

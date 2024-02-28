@@ -1,11 +1,11 @@
 import axios from 'axios';
-
+/*
 interface IGetFileShaResponse {
 	status: number;
 	headers: {
 		etag: string
 	};
-}
+}*/
 
 interface IGithubAPIHeaders {
 	responseEncoding: string;
@@ -74,7 +74,7 @@ class GithubAPI {
 	private async __getData(itemPath, type: 'HEAD' | 'BODY') {
 		try {
 			const githubPath: string = `${GithubAPIInformations.URL}/repos/${itemPath}`;
-			let response: IGetFileShaResponse;
+			let response: any;
 
 			if(type === 'HEAD') {
 				response = await axios.head(
@@ -87,6 +87,8 @@ class GithubAPI {
 					this._headers
 				);
 			}
+
+			console.log(response);
 
 			switch(response.status) {
 				case 403 :
@@ -105,7 +107,7 @@ class GithubAPI {
 		}
 	}
 
-	private async _getItemId(owner: string, repository: string, filepath: string): Promise<string> {
+	private async __getItemId(owner: string, repository: string, filepath: string): Promise<string> {
 		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD');
 	}
 
@@ -114,7 +116,7 @@ class GithubAPI {
 	}
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
-		const fileId = await this._getItemId(owner, repository, filepath);
+		const fileId = await this.__getItemId(owner, repository, filepath);
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
