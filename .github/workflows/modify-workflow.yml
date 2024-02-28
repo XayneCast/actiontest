@@ -16,5 +16,4 @@ jobs:
     - name: 'Update changelog'
       uses: './'
       with:
-        github_token: '${{ secrets.GITHUB_TOKEN }}'
-        changelog_path: './CHANGELOG.md'
+        secret_token: '${{ secrets.GITHUB_TOKEN }}'
