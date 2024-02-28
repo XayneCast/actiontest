@@ -3,7 +3,7 @@ author: 'xaynecast'
 description: 'Automatically updates a markdown file with the specified values to a repository'
 
 inputs:
-	FILE_PATH:
+	file_path:
 		description: 'Path of the file to use'
 		required: true
 
