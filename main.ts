@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+interface IGithubGetItemIdResponse {
+	status: number;
+	sha: string;
+}
 interface IGithubGetItemResponse {
 	status: number;
 
@@ -74,22 +78,43 @@ class GithubAPI {
 		};
 	}
 
-	private async __getData(itemPath, type: 'HEAD' | 'BODY'): Promise<IGithubGetItemResponse> {
-		try {
-			const githubPath: string = `${GithubAPIInformations.URL}/repos/${itemPath}`;
-			let response: any;
+	private __createLink(owner: string, repository: string, itemPath: string): string {
+		return `${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${itemPath}`;
+	}
 
-			if(type === 'HEAD') {
-				response = await axios.head(
-					githubPath,
-					this._headers
-				);
-			} else {
-				response = await axios.get(
-					githubPath,
-					this._headers
-				);
+	private async __getItemId(owner: string, repository: string, filepath: string): Promise<IGithubGetItemIdResponse> {
+		try {
+			const response: any = await axios.head(
+				this.__createLink(owner, repository, filepath),
+				this._headers
+			);
+
+			console.log(response);
+
+			switch(response.status) {
+				case 403 :
+					throw new GithubAPIResourceForbiddenError();
+				case 404 :
+					throw new GithubAPIResourceNotFoundError();
+				default :
+					return {
+						status: response.status,
+						sha: response.headers.etag.sha
+					};
 			}
+		} catch {
+			throw new GithubAPIConnectionFailed();
+		}
+	}
+
+	public async getItem(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
+		try {
+			const response: any = await axios.get(
+				this.__createLink(owner, repository, filepath),
+				this._headers
+			);
+
+			console.log(response);
 
 			switch(response.status) {
 				case 403 :
@@ -111,16 +136,8 @@ class GithubAPI {
 		}
 	}
 
-	private async __getItemId(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
-		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD');
-	}
-
-	public async getItem(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
-		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'BODY');
-	}
-
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
-		const data = await this.__getItemId(owner, repository, filepath);
+		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
 		console.log(`DATA RETRIEVED FROM ITEM ID: ${JSON.stringify(data, null, 4)}`);
 
 		const options: IGithubAPIOptions = {
@@ -133,7 +150,7 @@ class GithubAPI {
 				email: 'octocat@github.com'
 			},
 			content: Buffer.from(content).toString('base64'),
-			sha: data.data.sha
+			sha: data.sha
 		};
 
 		try {

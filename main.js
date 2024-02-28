@@ -97,25 +97,51 @@ var GithubAPI = /** @class */ (function () {
             }
         };
     }
-    GithubAPI.prototype.__getData = function (itemPath, type) {
+    GithubAPI.prototype.__createLink = function (owner, repository, itemPath) {
+        return "".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(itemPath);
+    };
+    GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var githubPath, response, _a;
+            var response, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 5, , 6]);
-                        githubPath = "".concat(GithubAPIInformations.URL, "/repos/").concat(itemPath);
-                        response = void 0;
-                        if (!(type === 'HEAD')) return [3 /*break*/, 2];
-                        return [4 /*yield*/, axios_1.default.head(githubPath, this._headers)];
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.head(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
                         response = _b.sent();
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, axios_1.default.get(githubPath, this._headers)];
-                    case 3:
+                        console.log(response);
+                        switch (response.status) {
+                            case 403:
+                                throw new GithubAPIResourceForbiddenError();
+                            case 404:
+                                throw new GithubAPIResourceNotFoundError();
+                            default:
+                                return [2 /*return*/, {
+                                        status: response.status,
+                                        sha: response.headers.etag.sha
+                                    }];
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        _a = _b.sent();
+                        throw new GithubAPIConnectionFailed();
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    GithubAPI.prototype.getItem = function (owner, repository, filepath) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.get(this.__createLink(owner, repository, filepath), this._headers)];
+                    case 1:
                         response = _b.sent();
-                        _b.label = 4;
-                    case 4:
+                        console.log(response);
                         switch (response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
@@ -131,26 +157,12 @@ var GithubAPI = /** @class */ (function () {
                                         }
                                     }];
                         }
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 3];
+                    case 2:
                         _a = _b.sent();
                         throw new GithubAPIConnectionFailed();
-                    case 6: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
-            });
-        });
-    };
-    GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
-            });
-        });
-    };
-    GithubAPI.prototype.getItem = function (owner, repository, filepath) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'BODY')];
             });
         });
     };
@@ -173,7 +185,7 @@ var GithubAPI = /** @class */ (function () {
                                 email: 'octocat@github.com'
                             },
                             content: Buffer.from(content).toString('base64'),
-                            sha: data.data.sha
+                            sha: data.sha
                         };
                         _b.label = 2;
                     case 2:
