@@ -122,7 +122,14 @@ var GithubAPI = /** @class */ (function () {
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             default:
-                                return [2 /*return*/, response];
+                                return [2 /*return*/, {
+                                        status: response.status,
+                                        data: {
+                                            sha: response.data.sha,
+                                            content: response.data.content,
+                                            size: response.data.size
+                                        }
+                                    }];
                         }
                         return [3 /*break*/, 6];
                     case 5:

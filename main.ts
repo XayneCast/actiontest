@@ -77,7 +77,7 @@ class GithubAPI {
 	private async __getData(itemPath, type: 'HEAD' | 'BODY'): Promise<IGithubGetItemResponse> {
 		try {
 			const githubPath: string = `${GithubAPIInformations.URL}/repos/${itemPath}`;
-			let response: IGithubGetItemResponse;
+			let response: any;
 
 			if(type === 'HEAD') {
 				response = await axios.head(
@@ -97,7 +97,14 @@ class GithubAPI {
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
 				default :
-					return response;
+					return {
+						status: response.status,
+						data: {
+							sha: response.data.sha,
+							content: response.data.content,
+							size: response.data.size
+						}
+					};
 			}
 		} catch {
 			throw new GithubAPIConnectionFailed();
