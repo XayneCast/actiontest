@@ -5,7 +5,6 @@ description: 'Automatically updates a changelog with the latest changes made to 
 inputs:
   secret_token:
     description: 'Token used to perform live Operations on Github'
-    default: '${{ secrets.GITHUB_TOKEN }}'
     required: true
   file_path:
     description: 'Token to use to perform live Operations on Github'
