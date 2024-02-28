@@ -191,6 +191,7 @@ var GithubAPI = /** @class */ (function () {
                     case 3: return [2 /*return*/, _a.sent()];
                     case 4:
                         error_3 = _a.sent();
+                        console.log(error_3);
                         switch (error_3.status) {
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();

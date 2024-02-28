@@ -154,6 +154,8 @@ class GithubAPI {
 				this._headers
 			);
 		} catch(error) {
+			console.log(error);
+
 			switch(error.status) {
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
