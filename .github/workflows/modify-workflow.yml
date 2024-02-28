@@ -14,7 +14,7 @@ jobs:
     - name: 'Show dir'
       run: 'ls'
     - name: 'Update changelog'
-      uses: './action.yml'
+      uses: 'actiontest/action.yml'
       with:
         github_token: '${{ secrets.GITHUB_TOKEN }}'
         changelog_path: './CHANGELOG.md'
