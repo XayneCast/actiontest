@@ -66,6 +66,8 @@ class GithubAPI {
 		try {
 			const fileSha = await this.__getContentSha(owner, repository, filepath);
 
+			console.log(fileSha);
+
 			return axios.put(`${GithubInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
 				{
 					owner: owner,
