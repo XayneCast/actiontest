@@ -66,16 +66,23 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.__getContentSha = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var response;
+            var response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1.default.head("".concat(GithubInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), this._headers)];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.head("".concat(GithubInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), this._headers)];
                     case 1:
                         response = _a.sent();
                         if (response.status !== 200) {
                             throw Error('File don\'t exists !');
                         }
                         return [2 /*return*/, response.headers.etag.slice(3, -1)];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.log("Error on trying to get content SHA !\n");
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -89,7 +96,7 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.updateFile = function (content, owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var fileSha, error_1;
+            var fileSha, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -97,6 +104,8 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, this.__getContentSha(owner, repository, filepath)];
                     case 1:
                         fileSha = _a.sent();
+                        console.log(fileSha);
+                        process.stderr.write(fileSha);
                         return [2 /*return*/, axios_1.default.put("".concat(GithubInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), {
                                 owner: owner,
                                 repo: repository,
@@ -110,7 +119,7 @@ var GithubAPI = /** @class */ (function () {
                                 sha: fileSha
                             }, this._headers)];
                     case 2:
-                        error_1 = _a.sent();
+                        error_2 = _a.sent();
                         throw Error('File not found !');
                     case 3: return [2 /*return*/];
                 }
@@ -140,8 +149,13 @@ function main() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    console.log('Entering main ...');
+                    console.log('Getting secret token ...');
                     token = GithubParameters.getParameter('secret_token');
+                    console.log("Secret token retrieved: ".concat(token, " !"));
+                    console.log('Creating Github API connection');
                     api = new GithubAPI(token);
+                    console.log('Github API connection created !');
                     //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
                     //console.log(content);
                     return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md')];
@@ -149,6 +163,7 @@ function main() {
                     //const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
                     //console.log(content);
                     _a.sent();
+                    console.log('Exiting main !');
                     return [2 /*return*/];
             }
         });
