@@ -137,27 +137,29 @@ var GithubParameters = /** @class */ (function () {
     function GithubParameters() {
     }
     GithubParameters.getParameter = function (name) {
-        return process.env["INPUT_".concat(name.replace(/ /g, '_').toUpperCase())] || '';
+        return process.env["INPUT_".concat(name.replace(' ', '_').toUpperCase())] || '';
     };
     return GithubParameters;
 }());
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var token, api, error_3;
+        var secret_token, file_path, value, api, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log('Entering main ...');
-                    console.log('Getting secret token ...');
-                    token = GithubParameters.getParameter('secret_token');
-                    console.log("Secret token retrieved: ".concat(token, " !"));
+                    console.log('Retrieving action arguments ...');
+                    secret_token = GithubParameters.getParameter('secret_token');
+                    file_path = GithubParameters.getParameter('file_path');
+                    value = GithubParameters.getParameter('value');
+                    console.log("Action arguments retrieved !");
                     console.log('Creating Github API connection');
-                    api = new GithubAPI(token);
+                    api = new GithubAPI(secret_token);
                     console.log('Github API connection created !');
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md')];
+                    return [4 /*yield*/, api.updateFile(value, 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();
                     return [3 /*break*/, 4];
