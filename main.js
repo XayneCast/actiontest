@@ -102,29 +102,29 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var response, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, axios_1.default.head(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
-                        response = _b.sent();
-                        switch (response.status) {
+                        response = _a.sent();
+                        return [2 /*return*/, {
+                                status: response.status,
+                                sha: response.headers.etag.sha
+                            }];
+                    case 2:
+                        error_1 = _a.sent();
+                        switch (error_1.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             default:
-                                return [2 /*return*/, {
-                                        status: response.status,
-                                        sha: response.headers.etag.sha
-                                    }];
+                                throw new GithubAPIConnectionFailed();
                         }
                         return [3 /*break*/, 3];
-                    case 2:
-                        _a = _b.sent();
-                        throw new GithubAPIConnectionFailed();
                     case 3: return [2 /*return*/];
                 }
             });
@@ -132,33 +132,33 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.getItem = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var response, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, axios_1.default.get(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
-                        response = _b.sent();
-                        switch (response.status) {
+                        response = _a.sent();
+                        return [2 /*return*/, {
+                                status: response.status,
+                                data: {
+                                    sha: response.data.sha,
+                                    content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
+                                    size: response.data.size
+                                }
+                            }];
+                    case 2:
+                        error_2 = _a.sent();
+                        switch (error_2.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             default:
-                                return [2 /*return*/, {
-                                        status: response.status,
-                                        data: {
-                                            sha: response.data.sha,
-                                            content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
-                                            size: response.data.size
-                                        }
-                                    }];
+                                throw new GithubAPIConnectionFailed();
                         }
                         return [3 /*break*/, 3];
-                    case 2:
-                        _a = _b.sent();
-                        throw new GithubAPIConnectionFailed();
                     case 3: return [2 /*return*/];
                 }
             });
@@ -166,7 +166,7 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.updateItem = function (content, owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, options, response;
+            var data, options, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
@@ -184,10 +184,14 @@ var GithubAPI = /** @class */ (function () {
                             content: Buffer.from(content, 'utf-8').toString('base64'),
                             sha: data.sha
                         };
-                        return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), options, this._headers)];
+                        _a.label = 2;
                     case 2:
-                        response = _a.sent();
-                        switch (response.status) {
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), options, this._headers)];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4:
+                        error_3 = _a.sent();
+                        switch (error_3.status) {
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             case 409:
@@ -195,9 +199,10 @@ var GithubAPI = /** @class */ (function () {
                             case 422:
                                 throw new GithubAPIResourceForbiddenError();
                             default:
-                                return [2 /*return*/];
+                                throw new GithubAPIConnectionFailed();
                         }
-                        return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });

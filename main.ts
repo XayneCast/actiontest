@@ -89,19 +89,19 @@ class GithubAPI {
 				this._headers
 			);
 
-			switch(response.status) {
+			return {
+				status: response.status,
+				sha: response.headers.etag.sha
+			};
+		} catch(error) {
+			switch(error.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
 				default :
-					return {
-						status: response.status,
-						sha: response.headers.etag.sha
-					};
+					throw new GithubAPIConnectionFailed();
 			}
-		} catch {
-			throw new GithubAPIConnectionFailed();
 		}
 	}
 
@@ -112,23 +112,23 @@ class GithubAPI {
 				this._headers
 			);
 
-			switch(response.status) {
+			return {
+				status: response.status,
+				data: {
+					sha: response.data.sha,
+					content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
+					size: response.data.size
+				}
+			};
+		} catch(error) {
+			switch(error.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
 				default :
-					return {
-						status: response.status,
-						data: {
-							sha: response.data.sha,
-							content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
-							size: response.data.size
-						}
-					};
+					throw new GithubAPIConnectionFailed();
 			}
-		} catch {
-			throw new GithubAPIConnectionFailed();
 		}
 	}
 
@@ -147,21 +147,23 @@ class GithubAPI {
 			sha: data.sha
 		};
 
-		const response: any = await axios.put(
-			`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
-			options,
-			this._headers
-		);
-
-		switch(response.status) {
-			case 404 :
-				throw new GithubAPIResourceNotFoundError();
-			case 409 :
-				throw new GithubAPIResourceConflictError();
-			case 422 :
-				throw new GithubAPIResourceForbiddenError();
-			default :
-				return;
+		try {
+			return await axios.put(
+				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
+				options,
+				this._headers
+			);
+		} catch(error) {
+			switch(error.status) {
+				case 404 :
+					throw new GithubAPIResourceNotFoundError();
+				case 409 :
+					throw new GithubAPIResourceConflictError();
+				case 422 :
+					throw new GithubAPIResourceForbiddenError();
+				default :
+					throw new GithubAPIConnectionFailed();
+			}
 		}
 	}
 }
