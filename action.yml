@@ -1,0 +1,12 @@
+name: 'Markdown updater'
+author: 'xaynecast'
+description: 'Automatically updates a markdown file with the specified values to a repository'
+
+inputs:
+	FILE_PATH:
+		description: 'Path of the file to use'
+		required: true
+
+runs:
+	using: 'node16'
+	main: 'main.js'
