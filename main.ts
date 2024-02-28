@@ -147,25 +147,21 @@ class GithubAPI {
 			sha: data.sha
 		};
 
-		try {
-			const response: any = await axios.put(
-				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
-				options,
-				this._headers
-			);
+		const response: any = await axios.put(
+			`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
+			options,
+			this._headers
+		);
 
-			switch(response.status) {
-				case 404 :
-					throw new GithubAPIResourceNotFoundError();
-				case 409 :
-					throw new GithubAPIResourceConflictError();
-				case 422 :
-					throw new GithubAPIResourceForbiddenError();
-				default :
-					return;
-			}
-		} catch {
-			throw new GithubAPIConnectionFailed();
+		switch(response.status) {
+			case 404 :
+				throw new GithubAPIResourceNotFoundError();
+			case 409 :
+				throw new GithubAPIResourceConflictError();
+			case 422 :
+				throw new GithubAPIResourceForbiddenError();
+			default :
+				return;
 		}
 	}
 }

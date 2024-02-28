@@ -166,12 +166,12 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.updateItem = function (content, owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, options, response, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var data, options, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
-                        data = _b.sent();
+                        data = _a.sent();
                         options = {
                             owner: owner,
                             repo: repository,
@@ -184,12 +184,9 @@ var GithubAPI = /** @class */ (function () {
                             content: Buffer.from(content, 'utf-8').toString('base64'),
                             sha: data.sha
                         };
-                        _b.label = 2;
-                    case 2:
-                        _b.trys.push([2, 4, , 5]);
                         return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), options, this._headers)];
-                    case 3:
-                        response = _b.sent();
+                    case 2:
+                        response = _a.sent();
                         switch (response.status) {
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
@@ -200,11 +197,7 @@ var GithubAPI = /** @class */ (function () {
                             default:
                                 return [2 /*return*/];
                         }
-                        return [3 /*break*/, 5];
-                    case 4:
-                        _a = _b.sent();
-                        throw new GithubAPIConnectionFailed();
-                    case 5: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });
