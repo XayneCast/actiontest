@@ -1,20 +1,15 @@
 name: Deploy Site
-
 on:
 	push:
 		branches:
 			- 'main' # Only trigger on the development branch
-
 jobs:
 	build:
 		runs-on: 'ubuntu-latest'
-
 		steps:
 			- name: 'Perform checkout'
-
 		uses: 'actions/checkout@v2'
 			- name: 'Update changelog'
-
 		uses: 'actiontest'
 			with:
 				SECRET_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
