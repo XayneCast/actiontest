@@ -12,7 +12,7 @@ jobs:
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
     - name: 'Show dir'
-      uses: 'ls'
+      run: 'ls'
     - name: 'Update changelog'
       uses: './action.yml'
       with:
