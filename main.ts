@@ -121,7 +121,7 @@ class GithubAPI {
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data = await this.__getItemId(owner, repository, filepath);
-		console.log(`DATA RETRIEVED FROM ITEM ID: ${data}`);
+		console.log(`DATA RETRIEVED FROM ITEM ID: ${JSON.stringify(data, null, 4)}`);
 
 		const options: IGithubAPIOptions = {
 			owner: owner,
@@ -182,7 +182,7 @@ async function main(): Promise<void> {
 
 	const content = await api.getItem('xaynecast', 'actiontest', 'test.md');
 
-	console.log(`DATA RETRIEVED FROM ITEM ID: ${content}`);
+	console.log(`DATA RETRIEVED FROM ITEM ID: ${JSON.stringify(content, null, 4)}`);
 
 	await api.updateItem(value, 'xaynecast', 'actiontest', file_path);
 
