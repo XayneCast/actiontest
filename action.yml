@@ -3,10 +3,10 @@ author: 'jeabapLANG'
 description: 'Automatically updates a changelog with the latest changes made to a repository'
 
 inputs:
-	secret_token:
-		description: 'Token used to perform live Operations on Github'
-		required: true
+  secret_token:
+    description: 'Token used to perform live Operations on Github'
+    required: true
 
 runs:
-	using: 'node16'
-	main: 'main.js'
+  using: 'node16'
+  main: 'main.js'
