@@ -224,7 +224,7 @@ function main() {
                     return [4 /*yield*/, api.getItem('xaynecast', 'actiontest', 'test.md')];
                 case 1:
                     content = _a.sent();
-                    console.log(content);
+                    console.log(content.data);
                     return [4 /*yield*/, api.updateItem(value, 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();

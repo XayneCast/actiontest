@@ -172,7 +172,9 @@ async function main(): Promise<void> {
 	console.log('Github API connection created !');
 
 	const content = await api.getItem('xaynecast', 'actiontest', 'test.md');
-	console.log(content);
+
+	console.log(content.data);
+
 	await api.updateItem(value, 'xaynecast', 'actiontest', file_path);
 
 	console.log('Exiting main !');
