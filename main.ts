@@ -122,7 +122,7 @@ class GithubAPI {
 						status: response.status,
 						data: {
 							sha: response.data.sha,
-							content: Buffer.from(response.data.content).toString('utf-8'),
+							content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
 							size: response.data.size
 						}
 					};
@@ -143,7 +143,7 @@ class GithubAPI {
 				name: 'Changelog updater',
 				email: 'octocat@github.com'
 			},
-			content: Buffer.from(content).toString('base64'),
+			content: Buffer.from(content, 'utf-8').toString('base64'),
 			sha: data.sha
 		};
 
