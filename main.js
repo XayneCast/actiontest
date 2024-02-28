@@ -116,17 +116,13 @@ var GithubAPI = /** @class */ (function () {
                         response = _b.sent();
                         _b.label = 4;
                     case 4:
-                        console.log(response);
                         switch (response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
                             case 404:
                                 throw new GithubAPIResourceNotFoundError();
                             default:
-                                if (type === 'HEAD') {
-                                    return [2 /*return*/, response.headers.etag.slice(3, -1)];
-                                }
-                                return [2 /*return*/];
+                                return [2 /*return*/, response];
                         }
                         return [3 /*break*/, 6];
                     case 5:
@@ -140,7 +136,10 @@ var GithubAPI = /** @class */ (function () {
     GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
+                    case 1: return [2 /*return*/, (_a.sent()).data.sha.slice(3, -1)];
+                }
             });
         });
     };

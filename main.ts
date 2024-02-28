@@ -1,11 +1,14 @@
 import axios from 'axios';
-/*
-interface IGetFileShaResponse {
+
+interface IGithubGetItemResponse {
 	status: number;
-	headers: {
-		etag: string
-	};
-}*/
+
+	data: {
+		sha: string;
+		content: string;
+		size: number;
+	}
+}
 
 interface IGithubAPIHeaders {
 	responseEncoding: string;
@@ -71,10 +74,10 @@ class GithubAPI {
 		};
 	}
 
-	private async __getData(itemPath, type: 'HEAD' | 'BODY') {
+	private async __getData(itemPath, type: 'HEAD' | 'BODY'): Promise<IGithubGetItemResponse> {
 		try {
 			const githubPath: string = `${GithubAPIInformations.URL}/repos/${itemPath}`;
-			let response: any;
+			let response: IGithubGetItemResponse;
 
 			if(type === 'HEAD') {
 				response = await axios.head(
@@ -88,19 +91,13 @@ class GithubAPI {
 				);
 			}
 
-			console.log(response);
-
 			switch(response.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
 				default :
-					if(type === 'HEAD') {
-						return response.headers.etag.slice(3, -1);
-					}
-
-					return;
+					return response;
 			}
 		} catch {
 			throw new GithubAPIConnectionFailed();
@@ -108,10 +105,10 @@ class GithubAPI {
 	}
 
 	private async __getItemId(owner: string, repository: string, filepath: string): Promise<string> {
-		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD');
+		return (await this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD')).data.sha.slice(3, -1);
 	}
 
-	public async getItem(owner: string, repository: string, filepath: string): Promise<any> {
+	public async getItem(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
 		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'BODY');
 	}
 
