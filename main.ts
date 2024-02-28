@@ -89,6 +89,8 @@ class GithubAPI {
 				this._headers
 			);
 
+			console.log(response);
+
 			return {
 				status: response.status,
 				sha: response.headers.etag.sha
@@ -134,7 +136,6 @@ class GithubAPI {
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
-		console.log('SHA is: ' + data.sha);
 
 		const options: IGithubAPIOptions = {
 			owner: owner,
@@ -156,8 +157,6 @@ class GithubAPI {
 				this._headers
 			);
 		} catch(error) {
-			console.log(error);
-
 			switch(error.response.status) {
 				case 404 :
 					throw new GithubAPIResourceNotFoundError();
