@@ -93,7 +93,7 @@ class GithubAPI {
 
 			return {
 				status: response.status,
-				sha: response.headers.etag.sha
+				sha: response.headers.etag.slice(3, -1)
 			};
 		} catch(error) {
 			switch(error.response.status) {

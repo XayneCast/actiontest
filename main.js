@@ -113,7 +113,7 @@ var GithubAPI = /** @class */ (function () {
                         console.log(response);
                         return [2 /*return*/, {
                                 status: response.status,
-                                sha: response.headers.etag.sha
+                                sha: response.headers.etag.slice(3, -1)
                             }];
                     case 2:
                         error_1 = _a.sent();
