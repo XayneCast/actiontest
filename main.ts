@@ -113,7 +113,9 @@ class GithubAPI {
 	}
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
-		const fileId = (await this.__getItemId(owner, repository, filepath)).data.sha.slice(3, -1);
+		const data = await this.__getItemId(owner, repository, filepath);
+		console.log(data);
+		const fileId = data.data.sha.slice(3, -1);
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
