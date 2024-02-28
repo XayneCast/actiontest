@@ -89,8 +89,6 @@ class GithubAPI {
 				this._headers
 			);
 
-			console.log(response);
-
 			switch(response.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
@@ -114,8 +112,6 @@ class GithubAPI {
 				this._headers
 			);
 
-			console.log(response);
-
 			switch(response.status) {
 				case 403 :
 					throw new GithubAPIResourceForbiddenError();
@@ -126,7 +122,7 @@ class GithubAPI {
 						status: response.status,
 						data: {
 							sha: response.data.sha,
-							content: response.data.content,
+							content: Buffer.from(response.data.content).toString('utf-8'),
 							size: response.data.size
 						}
 					};
@@ -138,8 +134,6 @@ class GithubAPI {
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
-		console.log(`DATA RETRIEVED FROM ITEM ID: ${JSON.stringify(data, null, 4)}`);
-
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
@@ -199,9 +193,9 @@ async function main(): Promise<void> {
 
 	const content = await api.getItem('xaynecast', 'actiontest', 'test.md');
 
-	console.log(`DATA RETRIEVED FROM ITEM ID: ${JSON.stringify(content, null, 4)}`);
+	console.log(`Old content: ${content.data.content}`);
 
-	await api.updateItem(value, 'xaynecast', 'actiontest', file_path);
+	await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
 
 	console.log('Exiting main !');
 }

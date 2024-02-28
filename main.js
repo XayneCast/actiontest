@@ -110,7 +110,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.head(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
                         response = _b.sent();
-                        console.log(response);
                         switch (response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
@@ -141,7 +140,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
                         response = _b.sent();
-                        console.log(response);
                         switch (response.status) {
                             case 403:
                                 throw new GithubAPIResourceForbiddenError();
@@ -152,7 +150,7 @@ var GithubAPI = /** @class */ (function () {
                                         status: response.status,
                                         data: {
                                             sha: response.data.sha,
-                                            content: response.data.content,
+                                            content: Buffer.from(response.data.content).toString('utf-8'),
                                             size: response.data.size
                                         }
                                     }];
@@ -174,7 +172,6 @@ var GithubAPI = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
                         data = _b.sent();
-                        console.log("DATA RETRIEVED FROM ITEM ID: ".concat(JSON.stringify(data, null, 4)));
                         options = {
                             owner: owner,
                             repo: repository,
@@ -241,8 +238,8 @@ function main() {
                     return [4 /*yield*/, api.getItem('xaynecast', 'actiontest', 'test.md')];
                 case 1:
                     content = _a.sent();
-                    console.log("DATA RETRIEVED FROM ITEM ID: ".concat(JSON.stringify(content, null, 4)));
-                    return [4 /*yield*/, api.updateItem(value, 'xaynecast', 'actiontest', file_path)];
+                    console.log("Old content: ".concat(content.data.content));
+                    return [4 /*yield*/, api.updateItem("".concat(content.data.content, " + ").concat(value), 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();
                     console.log('Exiting main !');
