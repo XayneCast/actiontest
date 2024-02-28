@@ -98,6 +98,8 @@ class GithubParameters {
 }
 
 async function main(): Promise<void> {
+	console.log("Starting main ...");
+
 	const token = GithubParameters.getParameter('secret_token');
 	const api = new GithubAPI(token);
 
