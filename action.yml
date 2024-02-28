@@ -3,10 +3,10 @@ author: 'xaynecast'
 description: 'Automatically updates a markdown file with the specified values to a repository'
 
 inputs:
-	file_path:
-		description: 'Path of the file to use'
-		required: true
+  file_path:
+    description: 'Path of the file to use'
+    required: true
 
 runs:
-	using: 'node16'
-	main: 'main.js'
+  using: 'node16'
+  main: 'main.js'
