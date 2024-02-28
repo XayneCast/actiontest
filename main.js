@@ -136,10 +136,7 @@ var GithubAPI = /** @class */ (function () {
     GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
-                    case 1: return [2 /*return*/, (_a.sent()).data.sha.slice(3, -1)];
-                }
+                return [2 /*return*/, this.__getData("".concat(owner, "/").concat(repository, "/contents/").concat(filepath), 'HEAD')];
             });
         });
     };
@@ -157,7 +154,7 @@ var GithubAPI = /** @class */ (function () {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
                     case 1:
-                        fileId = _b.sent();
+                        fileId = (_b.sent()).data.sha.slice(3, -1);
                         options = {
                             owner: owner,
                             repo: repository,

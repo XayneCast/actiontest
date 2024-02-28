@@ -104,8 +104,8 @@ class GithubAPI {
 		}
 	}
 
-	private async __getItemId(owner: string, repository: string, filepath: string): Promise<string> {
-		return (await this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD')).data.sha.slice(3, -1);
+	private async __getItemId(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
+		return this.__getData(`${owner}/${repository}/contents/${filepath}`, 'HEAD');
 	}
 
 	public async getItem(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
@@ -113,7 +113,7 @@ class GithubAPI {
 	}
 
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
-		const fileId = await this.__getItemId(owner, repository, filepath);
+		const fileId = (await this.__getItemId(owner, repository, filepath)).data.sha.slice(3, -1);
 		const options: IGithubAPIOptions = {
 			owner: owner,
 			repo: repository,
