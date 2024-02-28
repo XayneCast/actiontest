@@ -18,3 +18,7 @@ jobs:
       uses: './'
       with:
         secret_token: '${{ secrets.GITHUB_TOKEN }}'
+        file_path: 'test.md'
+        action_type: 'modify'
+        variable: 'MY_VARIABLE'
+        value: '${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'

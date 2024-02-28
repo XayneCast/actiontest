@@ -97,25 +97,29 @@ class GithubAPI {
 
 class GithubParameters {
 	public static getParameter(name: string) {
-		return process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
+		return process.env[`INPUT_${name.replace(' ', '_').toUpperCase()}`] || '';
 	}
 }
 
 async function main(): Promise<void> {
 	console.log('Entering main ...');
 
-	console.log('Getting secret token ...');
-	const token = GithubParameters.getParameter('secret_token');
-	console.log(`Secret token retrieved: ${token} !`);
+	console.log('Retrieving action arguments ...');
+	const secret_token: string = GithubParameters.getParameter('secret_token');
+	const file_path: string = GithubParameters.getParameter('file_path');
+	//const action_type: string = GithubParameters.getParameter('action_type');
+	//const variable: string = GithubParameters.getParameter('variable');
+	const value: string = GithubParameters.getParameter('value');
+	console.log(`Action arguments retrieved !`);
 
 	console.log('Creating Github API connection');
-	const api = new GithubAPI(token);
+	const api = new GithubAPI(secret_token);
 	console.log('Github API connection created !');
 
 	//const content = await api.getFileContent('xaynecast', 'actiontest', 'test.md');
 	//console.log(content);
 	try {
-		await api.updateFile('LMAO !', 'xaynecast', 'actiontest', 'test.md');
+		await api.updateFile(value, 'xaynecast', 'actiontest', file_path);
 	} catch(error) {
 		console.log(error);
 	}
