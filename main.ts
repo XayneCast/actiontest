@@ -49,7 +49,11 @@ class GithubAPI {
 	}
 
 	private async __getContentSha(owner: string, repository: string, filepath: string): Promise<string> {
-		const response: GetFileShaResponse = await axios.head(`${GithubInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`, this._headers);
+		try {
+			const response: GetFileShaResponse = await axios.head(`${GithubInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`, this._headers);
+		} catch (error) {
+			console.log("Error on trying to get content SHA !\n");
+		}
 
 		if (response.status !== 200) {
 			throw Error('File don\'t exists !');
