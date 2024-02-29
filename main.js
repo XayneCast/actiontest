@@ -110,7 +110,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.head(this.__createLink(owner, repository, filepath), this._headers)];
                     case 1:
                         response = _a.sent();
-                        console.log(response);
                         return [2 /*return*/, {
                                 status: response.status,
                                 sha: response.headers.etag.slice(3, -1)

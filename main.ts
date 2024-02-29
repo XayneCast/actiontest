@@ -89,8 +89,6 @@ class GithubAPI {
 				this._headers
 			);
 
-			console.log(response);
-
 			return {
 				status: response.status,
 				sha: response.headers.etag.slice(3, -1)
