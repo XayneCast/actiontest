@@ -46,19 +46,25 @@ class GithubAPIInformations {
 	public static URL: string = 'https://api.github.com';
 }
 
-class GithubAPIResourceForbiddenError extends Error {
-	constructor() {
-		super(`Requested resource cannot be accessed without appropriate authorizations !`);
+class GithubAPIResourceError extends Error {
+	constructor(errorMessage: string) {
+		super(errorMessage);
 	}
 }
-class GithubAPIResourceConflictError extends Error {
-	constructor() {
-		super(`Requested resource is conflicting with another !`);
+
+class GithubAPIResourceForbiddenError extends GithubAPIResourceError {
+	constructor(resourcePath: string) {
+		super(`Requested resource cannot be accessed without appropriate authorizations:\n\t'${resourcePath}'`);
 	}
 }
-class GithubAPIResourceNotFoundError extends Error {
-	constructor() {
-		super(`Requested resource can not be found !`);
+class GithubAPIResourceConflictError extends GithubAPIResourceError {
+	constructor(resourcePath: string) {
+		super(`Requested resource is conflicting with another:\n\t'${resourcePath}'`);
+	}
+}
+class GithubAPIResourceNotFoundError extends GithubAPIResourceError {
+	constructor(resourcePath: string) {
+		super(`Requested resource can not be found:\n\t'${resourcePath}'`);
 	}
 }
 class GithubAPIConnectionFailed extends Error {
@@ -87,14 +93,10 @@ class GithubAPI {
 		return `${GithubAPIInformations.URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`;
 	}
 
-	private async __getItemId(ownerName: string, repositoryName: string, itemPath: string): Promise<IGithubGetItemIdResponse> {
+	private async __getItemId(resourcePath: string): Promise<IGithubGetItemIdResponse> {
 		try {
 			const response: any = await axios.head(
-				this.__createLink(
-					ownerName,
-					repositoryName,
-					itemPath
-				),
+				resourcePath,
 				this._headers
 			);
 
@@ -105,9 +107,9 @@ class GithubAPI {
 		} catch(error) {
 			switch(error.response.status) {
 				case 403 :
-					throw new GithubAPIResourceForbiddenError();
+					throw new GithubAPIResourceForbiddenError(resourcePath);
 				case 404 :
-					throw new GithubAPIResourceNotFoundError();
+					throw new GithubAPIResourceNotFoundError(resourcePath);
 				default :
 					throw new GithubAPIConnectionFailed();
 			}
@@ -115,13 +117,15 @@ class GithubAPI {
 	}
 
 	public async getItem(ownerName: string, repositoryName: string, itemPath: string): Promise<IGithubGetItemResponse> {
+		const resourcePath: string = this.__createLink(
+			ownerName,
+			repositoryName,
+			itemPath
+		);
+
 		try {
 			const response: any = await axios.get(
-				this.__createLink(
-					ownerName,
-					repositoryName,
-					itemPath
-				),
+				resourcePath,
 				this._headers
 			);
 
@@ -136,9 +140,9 @@ class GithubAPI {
 		} catch(error) {
 			switch(error.response.status) {
 				case 403 :
-					throw new GithubAPIResourceForbiddenError();
+					throw new GithubAPIResourceForbiddenError(resourcePath);
 				case 404 :
-					throw new GithubAPIResourceNotFoundError();
+					throw new GithubAPIResourceNotFoundError(resourcePath);
 				default :
 					throw new GithubAPIConnectionFailed();
 			}
@@ -146,11 +150,13 @@ class GithubAPI {
 	}
 
 	public async updateItem(content: string, ownerName: string, repositoryName: string, itemPath: string): Promise<void> {
-		const data: IGithubGetItemIdResponse = await this.__getItemId(
+		const resourcePath: string = this.__createLink(
 			ownerName,
 			repositoryName,
 			itemPath
 		);
+
+		const data: IGithubGetItemIdResponse = await this.__getItemId(resourcePath);
 
 		const options: IGithubAPIContentOptions = {
 			owner: ownerName,
@@ -166,19 +172,19 @@ class GithubAPI {
 		};
 
 		try {
-			return await axios.put(
-				`${GithubAPIInformations.URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`,
+			await axios.put(
+				resourcePath,
 				options,
 				this._headers
 			);
 		} catch(error) {
 			switch(error.response.status) {
 				case 404 :
-					throw new GithubAPIResourceNotFoundError();
+					throw new GithubAPIResourceNotFoundError(resourcePath);
 				case 409 :
-					throw new GithubAPIResourceConflictError();
+					throw new GithubAPIResourceConflictError(resourcePath);
 				case 422 :
-					throw new GithubAPIResourceForbiddenError();
+					throw new GithubAPIResourceForbiddenError(resourcePath);
 				default :
 					throw new GithubAPIConnectionFailed();
 			}
@@ -186,11 +192,13 @@ class GithubAPI {
 	}
 
 	public async deleteItem(ownerName: string, repositoryName: string, itemPath: string): Promise<void> {
-		const data: IGithubGetItemIdResponse = await this.__getItemId(
+		const resourcePath: string = this.__createLink(
 			ownerName,
 			repositoryName,
 			itemPath
 		);
+
+		const data: IGithubGetItemIdResponse = await this.__getItemId(resourcePath);
 
 		const options: IGithubAPIOptions = {
 			owner: ownerName,
@@ -205,12 +213,8 @@ class GithubAPI {
 		};
 
 		try {
-			return await axios.delete(
-				this.__createLink(
-					ownerName,
-					repositoryName,
-					itemPath
-				),
+			await axios.delete(
+				resourcePath,
 				{
 					data: options,
 					params: this._headers
@@ -219,11 +223,11 @@ class GithubAPI {
 		} catch(error) {
 			switch(error.response.status) {
 				case 404 :
-					throw new GithubAPIResourceNotFoundError();
+					throw new GithubAPIResourceNotFoundError(resourcePath);
 				case 409 :
-					throw new GithubAPIResourceConflictError();
+					throw new GithubAPIResourceConflictError(resourcePath);
 				case 422 :
-					throw new GithubAPIResourceForbiddenError();
+					throw new GithubAPIResourceForbiddenError(resourcePath);
 				default :
 					throw new GithubAPIConnectionFailed();
 			}

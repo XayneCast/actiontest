@@ -58,27 +58,34 @@ var GithubAPIInformations = /** @class */ (function () {
     GithubAPIInformations.URL = 'https://api.github.com';
     return GithubAPIInformations;
 }());
+var GithubAPIResourceError = /** @class */ (function (_super) {
+    __extends(GithubAPIResourceError, _super);
+    function GithubAPIResourceError(errorMessage) {
+        return _super.call(this, errorMessage) || this;
+    }
+    return GithubAPIResourceError;
+}(Error));
 var GithubAPIResourceForbiddenError = /** @class */ (function (_super) {
     __extends(GithubAPIResourceForbiddenError, _super);
-    function GithubAPIResourceForbiddenError() {
-        return _super.call(this, "Requested resource cannot be accessed without appropriate authorizations !") || this;
+    function GithubAPIResourceForbiddenError(resourcePath) {
+        return _super.call(this, "Requested resource cannot be accessed without appropriate authorizations:\n\t'".concat(resourcePath, "'")) || this;
     }
     return GithubAPIResourceForbiddenError;
-}(Error));
+}(GithubAPIResourceError));
 var GithubAPIResourceConflictError = /** @class */ (function (_super) {
     __extends(GithubAPIResourceConflictError, _super);
-    function GithubAPIResourceConflictError() {
-        return _super.call(this, "Requested resource is conflicting with another !") || this;
+    function GithubAPIResourceConflictError(resourcePath) {
+        return _super.call(this, "Requested resource is conflicting with another:\n\t'".concat(resourcePath, "'")) || this;
     }
     return GithubAPIResourceConflictError;
-}(Error));
+}(GithubAPIResourceError));
 var GithubAPIResourceNotFoundError = /** @class */ (function (_super) {
     __extends(GithubAPIResourceNotFoundError, _super);
-    function GithubAPIResourceNotFoundError() {
-        return _super.call(this, "Requested resource can not be found !") || this;
+    function GithubAPIResourceNotFoundError(resourcePath) {
+        return _super.call(this, "Requested resource can not be found:\n\t'".concat(resourcePath, "'")) || this;
     }
     return GithubAPIResourceNotFoundError;
-}(Error));
+}(GithubAPIResourceError));
 var GithubAPIConnectionFailed = /** @class */ (function (_super) {
     __extends(GithubAPIConnectionFailed, _super);
     function GithubAPIConnectionFailed() {
@@ -100,14 +107,14 @@ var GithubAPI = /** @class */ (function () {
     GithubAPI.prototype.__createLink = function (ownerName, repositoryName, itemPath) {
         return "".concat(GithubAPIInformations.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath);
     };
-    GithubAPI.prototype.__getItemId = function (ownerName, repositoryName, itemPath) {
+    GithubAPI.prototype.__getItemId = function (resourcePath) {
         return __awaiter(this, void 0, void 0, function () {
             var response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.head(this.__createLink(ownerName, repositoryName, itemPath), this._headers)];
+                        return [4 /*yield*/, axios_1.default.head(resourcePath, this._headers)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, {
@@ -118,9 +125,9 @@ var GithubAPI = /** @class */ (function () {
                         error_1 = _a.sent();
                         switch (error_1.response.status) {
                             case 403:
-                                throw new GithubAPIResourceForbiddenError();
+                                throw new GithubAPIResourceForbiddenError(resourcePath);
                             case 404:
-                                throw new GithubAPIResourceNotFoundError();
+                                throw new GithubAPIResourceNotFoundError(resourcePath);
                             default:
                                 throw new GithubAPIConnectionFailed();
                         }
@@ -132,13 +139,16 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.getItem = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_2;
+            var resourcePath, response, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get(this.__createLink(ownerName, repositoryName, itemPath), this._headers)];
+                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
+                        _a.label = 1;
                     case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, axios_1.default.get(resourcePath, this._headers)];
+                    case 2:
                         response = _a.sent();
                         return [2 /*return*/, {
                                 status: response.status,
@@ -148,28 +158,30 @@ var GithubAPI = /** @class */ (function () {
                                     size: response.data.size
                                 }
                             }];
-                    case 2:
+                    case 3:
                         error_2 = _a.sent();
                         switch (error_2.response.status) {
                             case 403:
-                                throw new GithubAPIResourceForbiddenError();
+                                throw new GithubAPIResourceForbiddenError(resourcePath);
                             case 404:
-                                throw new GithubAPIResourceNotFoundError();
+                                throw new GithubAPIResourceNotFoundError(resourcePath);
                             default:
                                 throw new GithubAPIConnectionFailed();
                         }
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     GithubAPI.prototype.updateItem = function (content, ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, options, error_3;
+            var resourcePath, data, options, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.__getItemId(ownerName, repositoryName, itemPath)];
+                    case 0:
+                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
+                        return [4 /*yield*/, this.__getItemId(resourcePath)];
                     case 1:
                         data = _a.sent();
                         options = {
@@ -187,17 +199,19 @@ var GithubAPI = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath), options, this._headers)];
-                    case 3: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, axios_1.default.put(resourcePath, options, this._headers)];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
                     case 4:
                         error_3 = _a.sent();
                         switch (error_3.response.status) {
                             case 404:
-                                throw new GithubAPIResourceNotFoundError();
+                                throw new GithubAPIResourceNotFoundError(resourcePath);
                             case 409:
-                                throw new GithubAPIResourceConflictError();
+                                throw new GithubAPIResourceConflictError(resourcePath);
                             case 422:
-                                throw new GithubAPIResourceForbiddenError();
+                                throw new GithubAPIResourceForbiddenError(resourcePath);
                             default:
                                 throw new GithubAPIConnectionFailed();
                         }
@@ -209,10 +223,12 @@ var GithubAPI = /** @class */ (function () {
     };
     GithubAPI.prototype.deleteItem = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, options, error_4;
+            var resourcePath, data, options, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.__getItemId(ownerName, repositoryName, itemPath)];
+                    case 0:
+                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
+                        return [4 /*yield*/, this.__getItemId(resourcePath)];
                     case 1:
                         data = _a.sent();
                         options = {
@@ -229,20 +245,22 @@ var GithubAPI = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.delete(this.__createLink(ownerName, repositoryName, itemPath), {
+                        return [4 /*yield*/, axios_1.default.delete(resourcePath, {
                                 data: options,
                                 params: this._headers
                             })];
-                    case 3: return [2 /*return*/, _a.sent()];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
                     case 4:
                         error_4 = _a.sent();
                         switch (error_4.response.status) {
                             case 404:
-                                throw new GithubAPIResourceNotFoundError();
+                                throw new GithubAPIResourceNotFoundError(resourcePath);
                             case 409:
-                                throw new GithubAPIResourceConflictError();
+                                throw new GithubAPIResourceConflictError(resourcePath);
                             case 422:
-                                throw new GithubAPIResourceForbiddenError();
+                                throw new GithubAPIResourceForbiddenError(resourcePath);
                             default:
                                 throw new GithubAPIConnectionFailed();
                         }
