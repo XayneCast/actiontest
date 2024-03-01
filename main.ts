@@ -83,14 +83,18 @@ class GithubAPI {
 		}; //Define the necessary Github API headers
 	}
 
-	private __createLink(owner: string, repository: string, itemPath: string): string {
-		return `${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${itemPath}`;
+	private __createLink(ownerName: string, repositoryName: string, itemPath: string): string {
+		return `${GithubAPIInformations.URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`;
 	}
 
-	private async __getItemId(owner: string, repository: string, filepath: string): Promise<IGithubGetItemIdResponse> {
+	private async __getItemId(ownerName: string, repositoryName: string, itemPath: string): Promise<IGithubGetItemIdResponse> {
 		try {
 			const response: any = await axios.head(
-				this.__createLink(owner, repository, filepath),
+				this.__createLink(
+					ownerName,
+					repositoryName,
+					itemPath
+				),
 				this._headers
 			);
 
@@ -110,10 +114,14 @@ class GithubAPI {
 		}
 	}
 
-	public async getItem(owner: string, repository: string, filepath: string): Promise<IGithubGetItemResponse> {
+	public async getItem(ownerName: string, repositoryName: string, itemPath: string): Promise<IGithubGetItemResponse> {
 		try {
 			const response: any = await axios.get(
-				this.__createLink(owner, repository, filepath),
+				this.__createLink(
+					ownerName,
+					repositoryName,
+					itemPath
+				),
 				this._headers
 			);
 
@@ -137,13 +145,17 @@ class GithubAPI {
 		}
 	}
 
-	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
-		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
+	public async updateItem(content: string, ownerName: string, repositoryName: string, itemPath: string): Promise<void> {
+		const data: IGithubGetItemIdResponse = await this.__getItemId(
+			ownerName,
+			repositoryName,
+			itemPath
+		);
 
 		const options: IGithubAPIContentOptions = {
-			owner: owner,
-			repo: repository,
-			path: filepath,
+			owner: ownerName,
+			repo: repositoryName,
+			path: itemPath,
 			message: 'Auto updating changelog',
 			committer: {
 				name: 'Changelog updater',
@@ -155,7 +167,7 @@ class GithubAPI {
 
 		try {
 			return await axios.put(
-				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
+				`${GithubAPIInformations.URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`,
 				options,
 				this._headers
 			);
@@ -173,13 +185,17 @@ class GithubAPI {
 		}
 	}
 
-	public async deleteItem(owner: string, repository: string, filepath: string): Promise<void> {
-		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
+	public async deleteItem(ownerName: string, repositoryName: string, itemPath: string): Promise<void> {
+		const data: IGithubGetItemIdResponse = await this.__getItemId(
+			ownerName,
+			repositoryName,
+			itemPath
+		);
 
 		const options: IGithubAPIOptions = {
-			owner: owner,
-			repo: repository,
-			path: filepath,
+			owner: ownerName,
+			repo: repositoryName,
+			path: itemPath,
 			message: 'Auto updating changelog',
 			committer: {
 				name: 'Changelog updater',
@@ -190,7 +206,11 @@ class GithubAPI {
 
 		try {
 			return await axios.delete(
-				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
+				this.__createLink(
+					ownerName,
+					repositoryName,
+					itemPath
+				),
 				{
 					data: options,
 					params: this._headers

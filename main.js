@@ -97,17 +97,17 @@ var GithubAPI = /** @class */ (function () {
             }
         }; //Define the necessary Github API headers
     }
-    GithubAPI.prototype.__createLink = function (owner, repository, itemPath) {
-        return "".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(itemPath);
+    GithubAPI.prototype.__createLink = function (ownerName, repositoryName, itemPath) {
+        return "".concat(GithubAPIInformations.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath);
     };
-    GithubAPI.prototype.__getItemId = function (owner, repository, filepath) {
+    GithubAPI.prototype.__getItemId = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
             var response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.head(this.__createLink(owner, repository, filepath), this._headers)];
+                        return [4 /*yield*/, axios_1.default.head(this.__createLink(ownerName, repositoryName, itemPath), this._headers)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, {
@@ -130,14 +130,14 @@ var GithubAPI = /** @class */ (function () {
             });
         });
     };
-    GithubAPI.prototype.getItem = function (owner, repository, filepath) {
+    GithubAPI.prototype.getItem = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
             var response, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get(this.__createLink(owner, repository, filepath), this._headers)];
+                        return [4 /*yield*/, axios_1.default.get(this.__createLink(ownerName, repositoryName, itemPath), this._headers)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, {
@@ -164,18 +164,18 @@ var GithubAPI = /** @class */ (function () {
             });
         });
     };
-    GithubAPI.prototype.updateItem = function (content, owner, repository, filepath) {
+    GithubAPI.prototype.updateItem = function (content, ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
             var data, options, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
+                    case 0: return [4 /*yield*/, this.__getItemId(ownerName, repositoryName, itemPath)];
                     case 1:
                         data = _a.sent();
                         options = {
-                            owner: owner,
-                            repo: repository,
-                            path: filepath,
+                            owner: ownerName,
+                            repo: repositoryName,
+                            path: itemPath,
                             message: 'Auto updating changelog',
                             committer: {
                                 name: 'Changelog updater',
@@ -187,7 +187,7 @@ var GithubAPI = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), options, this._headers)];
+                        return [4 /*yield*/, axios_1.default.put("".concat(GithubAPIInformations.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath), options, this._headers)];
                     case 3: return [2 /*return*/, _a.sent()];
                     case 4:
                         error_3 = _a.sent();
@@ -207,18 +207,18 @@ var GithubAPI = /** @class */ (function () {
             });
         });
     };
-    GithubAPI.prototype.deleteItem = function (owner, repository, filepath) {
+    GithubAPI.prototype.deleteItem = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
             var data, options, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
+                    case 0: return [4 /*yield*/, this.__getItemId(ownerName, repositoryName, itemPath)];
                     case 1:
                         data = _a.sent();
                         options = {
-                            owner: owner,
-                            repo: repository,
-                            path: filepath,
+                            owner: ownerName,
+                            repo: repositoryName,
+                            path: itemPath,
                             message: 'Auto updating changelog',
                             committer: {
                                 name: 'Changelog updater',
@@ -229,7 +229,7 @@ var GithubAPI = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.delete("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), {
+                        return [4 /*yield*/, axios_1.default.delete(this.__createLink(ownerName, repositoryName, itemPath), {
                                 data: options,
                                 params: this._headers
                             })];
