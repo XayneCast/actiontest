@@ -95,7 +95,7 @@ var GithubAPI = /** @class */ (function () {
                 Authorization: "Bearer ".concat(token),
                 Accept: 'application/vnd.github+json'
             }
-        };
+        }; //Define the necessary Github API headers
     }
     GithubAPI.prototype.__createLink = function (owner, repository, itemPath) {
         return "".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(itemPath);
@@ -207,6 +207,51 @@ var GithubAPI = /** @class */ (function () {
             });
         });
     };
+    GithubAPI.prototype.deleteItem = function (owner, repository, filepath) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, options, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.__getItemId(owner, repository, filepath)];
+                    case 1:
+                        data = _a.sent();
+                        options = {
+                            owner: owner,
+                            repo: repository,
+                            path: filepath,
+                            message: 'Auto updating changelog',
+                            committer: {
+                                name: 'Changelog updater',
+                                email: 'octocat@github.com'
+                            },
+                            sha: data.sha
+                        };
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, axios_1.default.delete("".concat(GithubAPIInformations.URL, "/repos/").concat(owner, "/").concat(repository, "/contents/").concat(filepath), {
+                                data: options,
+                                params: this._headers
+                            })];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4:
+                        error_4 = _a.sent();
+                        switch (error_4.response.status) {
+                            case 404:
+                                throw new GithubAPIResourceNotFoundError();
+                            case 409:
+                                throw new GithubAPIResourceConflictError();
+                            case 422:
+                                throw new GithubAPIResourceForbiddenError();
+                            default:
+                                throw new GithubAPIConnectionFailed();
+                        }
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return GithubAPI;
 }());
 var GithubParameters = /** @class */ (function () {
@@ -240,7 +285,11 @@ function main() {
                     return [4 /*yield*/, api.updateItem("".concat(content.data.content, " + ").concat(value), 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();
+                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', 'test.md')];
+                case 3:
+                    _a.sent();
                     console.log('Exiting main !');
+                    process.exitCode = 1; //If program failed
                     return [2 /*return*/];
             }
         });

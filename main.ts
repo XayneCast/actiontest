@@ -28,13 +28,18 @@ interface IGithubAPIOptions {
 	owner: string;
 	repo: string;
 	path: string;
+
 	message: string;
 	committer: {
 		name: string;
 		email: string;
 	};
-	content: string;
+
 	sha: string;
+}
+
+interface IGithubAPIContentOptions extends IGithubAPIOptions {
+	content: string;
 }
 
 class GithubAPIInformations {
@@ -75,7 +80,7 @@ class GithubAPI {
 				Authorization: `Bearer ${token}`,
 				Accept: 'application/vnd.github+json'
 			}
-		};
+		}; //Define the necessary Github API headers
 	}
 
 	private __createLink(owner: string, repository: string, itemPath: string): string {
@@ -135,7 +140,7 @@ class GithubAPI {
 	public async updateItem(content: string, owner: string, repository: string, filepath: string): Promise<void> {
 		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
 
-		const options: IGithubAPIOptions = {
+		const options: IGithubAPIContentOptions = {
 			owner: owner,
 			repo: repository,
 			path: filepath,
@@ -153,6 +158,43 @@ class GithubAPI {
 				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
 				options,
 				this._headers
+			);
+		} catch(error) {
+			switch(error.response.status) {
+				case 404 :
+					throw new GithubAPIResourceNotFoundError();
+				case 409 :
+					throw new GithubAPIResourceConflictError();
+				case 422 :
+					throw new GithubAPIResourceForbiddenError();
+				default :
+					throw new GithubAPIConnectionFailed();
+			}
+		}
+	}
+
+	public async deleteItem(owner: string, repository: string, filepath: string): Promise<void> {
+		const data: IGithubGetItemIdResponse = await this.__getItemId(owner, repository, filepath);
+
+		const options: IGithubAPIOptions = {
+			owner: owner,
+			repo: repository,
+			path: filepath,
+			message: 'Auto updating changelog',
+			committer: {
+				name: 'Changelog updater',
+				email: 'octocat@github.com'
+			},
+			sha: data.sha
+		};
+
+		try {
+			return await axios.delete(
+				`${GithubAPIInformations.URL}/repos/${owner}/${repository}/contents/${filepath}`,
+				{
+					data: options,
+					params: this._headers
+				}
 			);
 		} catch(error) {
 			switch(error.response.status) {
@@ -196,7 +238,11 @@ async function main(): Promise<void> {
 
 	await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
 
+	await api.deleteItem('xaynecast', 'actiontest', 'test.md');
+
 	console.log('Exiting main !');
+
+	process.exitCode = 1; //If program failed
 }
 
 main();
