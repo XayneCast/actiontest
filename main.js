@@ -282,16 +282,17 @@ var GithubParameters = /** @class */ (function () {
 }());
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secret_token, file_path, value, api, content;
+        var secret_token, api, content;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log('Entering main ...');
                     console.log('Retrieving action arguments ...');
                     secret_token = GithubParameters.getParameter('secret_token');
-                    file_path = GithubParameters.getParameter('file_path');
-                    value = 'VALUE !' //GithubParameters.getParameter('value');
-                    ;
+                    //const file_path: string = GithubParameters.getParameter('file_path');
+                    //const action_type: string = GithubParameters.getParameter('action_type');
+                    //const variable: string = GithubParameters.getParameter('variable');
+                    //const value: string = 'VALUE !'//GithubParameters.getParameter('value');
                     console.log("Action arguments retrieved !");
                     console.log('Creating Github API connection');
                     api = new GithubAPI(secret_token);
@@ -300,14 +301,12 @@ function main() {
                 case 1:
                     content = _a.sent();
                     console.log("Old content: ".concat(content.data.content));
-                    return [4 /*yield*/, api.updateItem("".concat(content.data.content, " + ").concat(value), 'xaynecast', 'actiontest', file_path)];
+                    //await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
+                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', 'test.md')];
                 case 2:
-                    _a.sent();
-                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', file_path)];
-                case 3:
+                    //await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
                     _a.sent();
                     console.log('Exiting main !');
-                    process.exitCode = 1; //If program failed
                     return [2 /*return*/];
             }
         });

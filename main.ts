@@ -246,10 +246,10 @@ async function main(): Promise<void> {
 
 	console.log('Retrieving action arguments ...');
 	const secret_token: string = GithubParameters.getParameter('secret_token');
-	const file_path: string = GithubParameters.getParameter('file_path');
+	//const file_path: string = GithubParameters.getParameter('file_path');
 	//const action_type: string = GithubParameters.getParameter('action_type');
 	//const variable: string = GithubParameters.getParameter('variable');
-	const value: string = 'VALUE !'//GithubParameters.getParameter('value');
+	//const value: string = 'VALUE !'//GithubParameters.getParameter('value');
 	console.log(`Action arguments retrieved !`);
 
 	console.log('Creating Github API connection');
@@ -260,13 +260,11 @@ async function main(): Promise<void> {
 
 	console.log(`Old content: ${content.data.content}`);
 
-	await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
+	//await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
 
-	await api.deleteItem('xaynecast', 'actiontest', file_path);
+	await api.deleteItem('xaynecast', 'actiontest', 'test.md');
 
 	console.log('Exiting main !');
-
-	process.exitCode = 1; //If program failed
 }
 
 main();
