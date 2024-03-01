@@ -8,7 +8,7 @@ async function main(): Promise<void> {
 	console.log('Entering main ...');
 
 	console.log('Retrieving action arguments ...');
-	const secret_token: string = io.DynamicArguments.getParameter('secretToken');
+	const secretToken: string = io.DynamicArguments.getParameter('secretToken');
 	const itemOwner: string = io.DynamicArguments.getParameter('itemOwner');
 	const itemRepository: string = io.DynamicArguments.getParameter('itemOwner');
 	const itemPath: string = io.DynamicArguments.getParameter('itemPath');
@@ -17,7 +17,7 @@ async function main(): Promise<void> {
 	console.log(`Action arguments retrieved !`);
 
 	console.log('Creating Github API connection');
-	const githubClient = new api.GithubAPI(secret_token);
+	const githubClient = new api.GithubAPI(secretToken);
 	console.log('Github API connection created !');
 
 	console.log('Processing action type ...');

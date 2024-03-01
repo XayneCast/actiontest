@@ -3,21 +3,24 @@ author: 'jeabapLANG'
 description: 'Automatically updates a changelog with the latest changes made to a repository'
 
 inputs:
-  secret_token:
-    description: 'Token used to perform live Operations on Github'
-    required: true
-  file_path:
-    description: 'Token to use to perform live Operations on Github'
-    required: true
-  action_type:
-    description: 'Type of action to be taken on the given variable'
-    required: true
-  variable:
-    description: 'Name of variable to update'
-    required: true
-  value:
-    description: 'Value to use for the variable'
-    required: true
+  secretToken:
+    description: 'Token used to perform the live operations on Github'
+  itemOwner:
+    description: 'Owner of the repository to perform the live operations on Github'
+  itemRepository:
+    description: 'Name of the repository to perform the live operations on Github'
+  itemPath:
+    description: 'Path of the content to perform the live Operations on Github'
+  actionType:
+    description: 'Type of action to perform on Github'
+  commitMessage:
+    description: 'Message to display on the Github commit after performing the specified action type'
+  modificationType:
+    description: 'Modification type to perform on the specified variable'
+  variableName:
+    description: 'Name of the specified variable to update'
+  variableValue:
+    description: 'Value for the specified variable to update'
 
 runs:
   using: 'node20'

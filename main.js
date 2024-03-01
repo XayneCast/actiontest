@@ -40,13 +40,13 @@ var io = require("./io.js"); //Import io module
 var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secret_token, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableName, variableValue, dynamicContent;
+        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableName, variableValue, dynamicContent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     console.log('Entering main ...');
                     console.log('Retrieving action arguments ...');
-                    secret_token = io.DynamicArguments.getParameter('secretToken');
+                    secretToken = io.DynamicArguments.getParameter('secretToken');
                     itemOwner = io.DynamicArguments.getParameter('itemOwner');
                     itemRepository = io.DynamicArguments.getParameter('itemOwner');
                     itemPath = io.DynamicArguments.getParameter('itemPath');
@@ -54,7 +54,7 @@ function main() {
                     commitMessage = io.DynamicArguments.getParameter('commitMessage');
                     console.log("Action arguments retrieved !");
                     console.log('Creating Github API connection');
-                    githubClient = new api.GithubAPI(secret_token);
+                    githubClient = new api.GithubAPI(secretToken);
                     console.log('Github API connection created !');
                     console.log('Processing action type ...');
                     _a = actionType;
