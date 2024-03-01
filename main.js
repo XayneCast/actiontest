@@ -1,19 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -51,261 +36,81 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
-var GithubAPIInformations = /** @class */ (function () {
-    function GithubAPIInformations() {
-    }
-    GithubAPIInformations.URL = 'https://api.github.com';
-    return GithubAPIInformations;
-}());
-var GithubAPIResourceError = /** @class */ (function (_super) {
-    __extends(GithubAPIResourceError, _super);
-    function GithubAPIResourceError(errorMessage) {
-        return _super.call(this, errorMessage) || this;
-    }
-    return GithubAPIResourceError;
-}(Error));
-var GithubAPIResourceForbiddenError = /** @class */ (function (_super) {
-    __extends(GithubAPIResourceForbiddenError, _super);
-    function GithubAPIResourceForbiddenError(resourcePath) {
-        return _super.call(this, "Requested resource cannot be accessed without appropriate authorizations:\n\t'".concat(resourcePath, "'")) || this;
-    }
-    return GithubAPIResourceForbiddenError;
-}(GithubAPIResourceError));
-var GithubAPIResourceConflictError = /** @class */ (function (_super) {
-    __extends(GithubAPIResourceConflictError, _super);
-    function GithubAPIResourceConflictError(resourcePath) {
-        return _super.call(this, "Requested resource is conflicting with another:\n\t'".concat(resourcePath, "'")) || this;
-    }
-    return GithubAPIResourceConflictError;
-}(GithubAPIResourceError));
-var GithubAPIResourceNotFoundError = /** @class */ (function (_super) {
-    __extends(GithubAPIResourceNotFoundError, _super);
-    function GithubAPIResourceNotFoundError(resourcePath) {
-        return _super.call(this, "Requested resource can not be found:\n\t'".concat(resourcePath, "'")) || this;
-    }
-    return GithubAPIResourceNotFoundError;
-}(GithubAPIResourceError));
-var GithubAPIConnectionFailed = /** @class */ (function (_super) {
-    __extends(GithubAPIConnectionFailed, _super);
-    function GithubAPIConnectionFailed() {
-        return _super.call(this, "Connection to the Github API failed !") || this;
-    }
-    return GithubAPIConnectionFailed;
-}(Error));
-var GithubAPI = /** @class */ (function () {
-    function GithubAPI(token) {
-        this._headers = {
-            responseEncoding: 'utf-8',
-            responseType: 'json',
-            headers: {
-                Authorization: "Bearer ".concat(token),
-                Accept: 'application/vnd.github+json'
-            }
-        }; //Define the necessary Github API headers
-    }
-    GithubAPI.prototype.__createLink = function (ownerName, repositoryName, itemPath) {
-        return "".concat(GithubAPIInformations.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath);
-    };
-    GithubAPI.prototype.__getItemId = function (resourcePath) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.head(resourcePath, this._headers)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, {
-                                status: response.status,
-                                sha: response.headers.etag.slice(3, -1)
-                            }];
-                    case 2:
-                        error_1 = _a.sent();
-                        switch (error_1.response.status) {
-                            case 403:
-                                throw new GithubAPIResourceForbiddenError(resourcePath);
-                            case 404:
-                                throw new GithubAPIResourceNotFoundError(resourcePath);
-                            default:
-                                throw new GithubAPIConnectionFailed();
-                        }
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    GithubAPI.prototype.getItem = function (ownerName, repositoryName, itemPath) {
-        return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, response, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, axios_1.default.get(resourcePath, this._headers)];
-                    case 2:
-                        response = _a.sent();
-                        return [2 /*return*/, {
-                                status: response.status,
-                                data: {
-                                    sha: response.data.sha,
-                                    content: Buffer.from(response.data.content, 'base64').toString('utf-8'),
-                                    size: response.data.size
-                                }
-                            }];
-                    case 3:
-                        error_2 = _a.sent();
-                        switch (error_2.response.status) {
-                            case 403:
-                                throw new GithubAPIResourceForbiddenError(resourcePath);
-                            case 404:
-                                throw new GithubAPIResourceNotFoundError(resourcePath);
-                            default:
-                                throw new GithubAPIConnectionFailed();
-                        }
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    GithubAPI.prototype.updateItem = function (content, ownerName, repositoryName, itemPath) {
-        return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, data, options, error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
-                        return [4 /*yield*/, this.__getItemId(resourcePath)];
-                    case 1:
-                        data = _a.sent();
-                        options = {
-                            owner: ownerName,
-                            repo: repositoryName,
-                            path: itemPath,
-                            message: 'Auto updating changelog',
-                            committer: {
-                                name: 'Changelog updater',
-                                email: 'octocat@github.com'
-                            },
-                            content: Buffer.from(content, 'utf-8').toString('base64'),
-                            sha: data.sha
-                        };
-                        _a.label = 2;
-                    case 2:
-                        _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.put(resourcePath, options, this._headers)];
-                    case 3:
-                        _a.sent();
-                        return [3 /*break*/, 5];
-                    case 4:
-                        error_3 = _a.sent();
-                        switch (error_3.response.status) {
-                            case 404:
-                                throw new GithubAPIResourceNotFoundError(resourcePath);
-                            case 409:
-                                throw new GithubAPIResourceConflictError(resourcePath);
-                            case 422:
-                                throw new GithubAPIResourceForbiddenError(resourcePath);
-                            default:
-                                throw new GithubAPIConnectionFailed();
-                        }
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    GithubAPI.prototype.deleteItem = function (ownerName, repositoryName, itemPath) {
-        return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, data, options, error_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        resourcePath = this.__createLink(ownerName, repositoryName, itemPath);
-                        return [4 /*yield*/, this.__getItemId(resourcePath)];
-                    case 1:
-                        data = _a.sent();
-                        options = {
-                            owner: ownerName,
-                            repo: repositoryName,
-                            path: itemPath,
-                            message: 'Auto updating changelog',
-                            committer: {
-                                name: 'Changelog updater',
-                                email: 'octocat@github.com'
-                            },
-                            sha: data.sha
-                        };
-                        _a.label = 2;
-                    case 2:
-                        _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, axios_1.default.delete(resourcePath, {
-                                data: options,
-                                params: this._headers
-                            })];
-                    case 3:
-                        _a.sent();
-                        return [3 /*break*/, 5];
-                    case 4:
-                        error_4 = _a.sent();
-                        switch (error_4.response.status) {
-                            case 404:
-                                throw new GithubAPIResourceNotFoundError(resourcePath);
-                            case 409:
-                                throw new GithubAPIResourceConflictError(resourcePath);
-                            case 422:
-                                throw new GithubAPIResourceForbiddenError(resourcePath);
-                            default:
-                                throw new GithubAPIConnectionFailed();
-                        }
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return GithubAPI;
-}());
-var GithubParameters = /** @class */ (function () {
-    function GithubParameters() {
-    }
-    GithubParameters.getParameter = function (name) {
-        return process.env["INPUT_".concat(name.replace(' ', '_').toUpperCase())] || null;
-    };
-    return GithubParameters;
-}());
+var io = require("./io.js"); //Import io module
+var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secret_token, api, content;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var secret_token, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableName, variableValue, dynamicContent;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     console.log('Entering main ...');
                     console.log('Retrieving action arguments ...');
-                    secret_token = GithubParameters.getParameter('secret_token');
-                    //const file_path: string = GithubParameters.getParameter('file_path');
-                    //const action_type: string = GithubParameters.getParameter('action_type');
-                    //const variable: string = GithubParameters.getParameter('variable');
-                    //const value: string = 'VALUE !'//GithubParameters.getParameter('value');
+                    secret_token = io.DynamicArguments.getParameter('secretToken');
+                    itemOwner = io.DynamicArguments.getParameter('itemOwner');
+                    itemRepository = io.DynamicArguments.getParameter('itemOwner');
+                    itemPath = io.DynamicArguments.getParameter('itemPath');
+                    actionType = io.DynamicArguments.getParameter('actionType');
+                    commitMessage = io.DynamicArguments.getParameter('commitMessage');
                     console.log("Action arguments retrieved !");
                     console.log('Creating Github API connection');
-                    api = new GithubAPI(secret_token);
+                    githubClient = new api.GithubAPI(secret_token);
                     console.log('Github API connection created !');
-                    return [4 /*yield*/, api.getItem('xaynecast', 'actiontest', 'test.md')];
+                    console.log('Processing action type ...');
+                    _a = actionType;
+                    switch (_a) {
+                        case 'CONTENT': return [3 /*break*/, 1];
+                        case 'MODIFICATION': return [3 /*break*/, 3];
+                        case 'DELETION': return [3 /*break*/, 5];
+                    }
+                    return [3 /*break*/, 7];
                 case 1:
-                    content = _a.sent();
-                    console.log("Old content: ".concat(content.data.content));
-                    //await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
-                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', 'test.md')];
+                    console.log('Content action asked !');
+                    return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
                 case 2:
-                    //await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
-                    _a.sent();
+                    _b.sent();
+                    return [3 /*break*/, 7];
+                case 3:
+                    console.log('Modification action asked !');
+                    console.log('Retrieving modification arguments ...');
+                    modificationType = io.DynamicArguments.getParameter('modificationType');
+                    variableName = io.DynamicArguments.getParameter('variable');
+                    variableValue = null;
+                    if (modificationType !== 'REMOVE') {
+                        variableValue = io.DynamicArguments.getParameter('value');
+                    }
+                    console.log("Modification arguments retrieved !");
+                    dynamicContent = new io.DynamicContent(itemPath, {
+                        begin: '<!--{{ ',
+                        end: ' }}-->'
+                    });
+                    switch (modificationType) {
+                        case 'SET':
+                            dynamicContent.setVariable(variableName, variableValue);
+                            break;
+                        case 'REPLACE':
+                            dynamicContent.replaceVariable(variableName, variableValue);
+                            break;
+                        case 'INSERT':
+                            dynamicContent.insertVariable(variableName, variableValue);
+                            break;
+                        case 'REMOVE':
+                            dynamicContent.removeVariable(variableName);
+                            break;
+                        default: //If get
+                    }
+                    return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
+                case 4:
+                    _b.sent();
+                    return [3 /*break*/, 7];
+                case 5:
+                    console.log('Deletion action asked !');
+                    return [4 /*yield*/, githubClient.deleteItem(commitMessage, itemOwner, itemRepository, itemPath)];
+                case 6:
+                    _b.sent();
+                    return [3 /*break*/, 7];
+                case 7:
+                    console.log('Action executed !');
                     console.log('Exiting main !');
                     return [2 /*return*/];
             }
