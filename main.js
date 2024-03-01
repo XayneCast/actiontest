@@ -285,7 +285,7 @@ function main() {
                     return [4 /*yield*/, api.updateItem("".concat(content.data.content, " + ").concat(value), 'xaynecast', 'actiontest', file_path)];
                 case 2:
                     _a.sent();
-                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', 'test.md')];
+                    return [4 /*yield*/, api.deleteItem('xaynecast', 'actiontest', file_path)];
                 case 3:
                     _a.sent();
                     console.log('Exiting main !');

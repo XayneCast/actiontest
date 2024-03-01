@@ -238,7 +238,7 @@ async function main(): Promise<void> {
 
 	await api.updateItem(`${content.data.content} + ${value}`, 'xaynecast', 'actiontest', file_path);
 
-	await api.deleteItem('xaynecast', 'actiontest', 'test.md');
+	await api.deleteItem('xaynecast', 'actiontest', file_path);
 
 	console.log('Exiting main !');
 
