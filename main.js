@@ -74,10 +74,10 @@ function main() {
                     console.log('Modification action asked !');
                     console.log('Retrieving modification arguments ...');
                     modificationType = io.DynamicArguments.getParameter('modificationType');
-                    variableName = io.DynamicArguments.getParameter('variable');
+                    variableName = io.DynamicArguments.getParameter('variableName');
                     variableValue = null;
                     if (modificationType !== 'REMOVE') {
-                        variableValue = io.DynamicArguments.getParameter('value');
+                        variableValue = io.DynamicArguments.getParameter('variableValue');
                     }
                     console.log("Modification arguments retrieved !");
                     dynamicContent = new io.DynamicContent(itemPath, {
