@@ -125,6 +125,7 @@ class GithubAPI {
 				sha: response.headers.etag.slice(3, -1)
 			}; //Return the unique identifier of the specified resource
 		} catch(error) { //Catch the possible error
+			console.log(JSON.stringify(error, null, 4));
 			switch(error.response.status) { //Handle the error status
 				case 403 : //If 403 status
 					throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error

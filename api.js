@@ -143,6 +143,7 @@ var GithubAPI = /** @class */ (function () {
                             }]; //Return the unique identifier of the specified resource
                     case 2:
                         error_1 = _a.sent();
+                        console.log(JSON.stringify(error_1, null, 4));
                         switch (error_1.response.status) { //Handle the error status
                             case 403: //If 403 status
                                 throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
