@@ -189,6 +189,7 @@ var GithubAPI = /** @class */ (function () {
                             }]; //Return the requested item
                     case 3:
                         error_2 = _a.sent();
+                        console.log(error_2);
                         switch (error_2.response.status) { //Handle the error status
                             case 403: //If 403 status
                                 throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error

@@ -167,6 +167,7 @@ class GithubAPI {
 				}
 			}; //Return the requested item
 		} catch(error) { //Catch the possible error
+			console.log(error);
 			switch(error.response.status) { //Handle the error status
 				case 403 : //If 403 status
 					throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
