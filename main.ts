@@ -37,11 +37,11 @@ async function main(): Promise<void> {
 
 			console.log('Retrieving modification arguments ...');
 			const modificationType: ModificationType = io.DynamicArguments.getParameter('modificationType') as ModificationType;
-			const variableName: string = io.DynamicArguments.getParameter('variable');
+			const variableName: string = io.DynamicArguments.getParameter('variableName');
 			let variableValue: string = null;
 
 			if(modificationType !== 'REMOVE') {
-				variableValue = io.DynamicArguments.getParameter('value');
+				variableValue = io.DynamicArguments.getParameter('variableValue');
 			}
 			console.log(`Modification arguments retrieved !`);
 
