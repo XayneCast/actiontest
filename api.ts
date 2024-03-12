@@ -120,6 +120,8 @@ class GithubAPI {
 				this._headers
 			); //Request the informations of the specified resource
 
+			console.log('HERE: ' + JSON.stringify(response, null, 4));
+
 			return {
 				status: response.status,
 				sha: response.headers.etag.slice(3, -1)

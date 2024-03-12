@@ -137,6 +137,7 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.head(resourcePath, this._headers)];
                     case 1:
                         response = _a.sent();
+                        console.log('HERE: ' + JSON.stringify(response, null, 4));
                         return [2 /*return*/, {
                                 status: response.status,
                                 sha: response.headers.etag.slice(3, -1)
