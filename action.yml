@@ -20,7 +20,7 @@ inputs:
   variableName:
     description: 'Name of the specified variable to update'
   variableValue:
-    description: 'Value for the specified variable to update'
+    description: 'Value for the specifie variable to update'
 
 runs:
   using: 'node20'
