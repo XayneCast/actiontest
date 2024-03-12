@@ -217,6 +217,7 @@ class GithubAPI {
 				this._headers
 			); //Request the creation or the update of the specified resource
 		} catch(error) { //Catch the possible error
+			console.log(JSON.stringify(error, null, 4));
 			switch(error.response.status) { //Handle the error status
 				case 404 : //If 404 status
 					throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error

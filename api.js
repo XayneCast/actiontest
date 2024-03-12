@@ -244,6 +244,7 @@ var GithubAPI = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 4:
                         error_3 = _a.sent();
+                        console.log(JSON.stringify(error_3, null, 4));
                         switch (error_3.response.status) { //Handle the error status
                             case 404: //If 404 status
                                 throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
