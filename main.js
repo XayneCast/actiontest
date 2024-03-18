@@ -89,6 +89,7 @@ function main() {
                         begin: variableStartTag,
                         end: variableStopTag
                     });
+                    console.log("File content: " + dynamicContent.getContent());
                     switch (modificationType) {
                         case 'SET':
                             dynamicContent.setVariable(variableName, variableValue);
@@ -104,7 +105,7 @@ function main() {
                             break;
                         default: //If get
                     }
-                    console.log("File content: " + dynamicContent.getContent());
+                    console.log("File content after: " + dynamicContent.getContent());
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
                 case 5:
                     _b.sent();

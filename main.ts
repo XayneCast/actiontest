@@ -61,6 +61,8 @@ async function main(): Promise<void> {
 				}
 			);
 
+			console.log("File content: " + dynamicContent.getContent());
+
 			switch(modificationType) {
 				case 'SET':
 					dynamicContent.setVariable(
@@ -90,7 +92,7 @@ async function main(): Promise<void> {
 				default: //If get
 			}
 
-			console.log("File content: " + dynamicContent.getContent());
+			console.log("File content after: " + dynamicContent.getContent());
 
 			await githubClient.updateItem(
 				commitMessage,

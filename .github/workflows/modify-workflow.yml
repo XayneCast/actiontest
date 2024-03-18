@@ -21,7 +21,7 @@ jobs:
         itemPath: 'test.md'
         actionType: 'MODIFICATION'
         commitMessage: 'My commit !'
-        modificationType: 'REPLACE'
+        modificationType: 'SET'
         variableStartTag: '<!--{{'
         variableStopTag: '}}-->'
         variableName: 'MY_VARIABLE'
