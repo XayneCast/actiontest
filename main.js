@@ -40,7 +40,7 @@ var io = require("./io.js"); //Import io module
 var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableStartTag, variableStopTag, variableName, variableValue, dynamicContent;
+        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableStartTag, variableStopTag, variableName, variableValue, item, dynamicContent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -61,15 +61,15 @@ function main() {
                     switch (_a) {
                         case 'CONTENT': return [3 /*break*/, 1];
                         case 'MODIFICATION': return [3 /*break*/, 3];
-                        case 'DELETION': return [3 /*break*/, 5];
+                        case 'DELETION': return [3 /*break*/, 6];
                     }
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
                 case 1:
                     console.log('Content action asked !');
                     return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
                 case 2:
                     _b.sent();
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 8];
                 case 3:
                     console.log('Modification action asked !');
                     console.log('Retrieving modification arguments ...');
@@ -82,7 +82,10 @@ function main() {
                         variableValue = io.DynamicArguments.getParameter('variableValue');
                     }
                     console.log("Modification arguments retrieved !");
-                    dynamicContent = new io.DynamicContent(itemPath, {
+                    return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
+                case 4:
+                    item = _b.sent();
+                    dynamicContent = new io.DynamicContent(item.data.content, {
                         begin: variableStartTag,
                         end: variableStopTag
                     });
@@ -103,16 +106,16 @@ function main() {
                     }
                     console.log("File content: " + dynamicContent.getContent());
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
-                case 4:
-                    _b.sent();
-                    return [3 /*break*/, 7];
                 case 5:
+                    _b.sent();
+                    return [3 /*break*/, 8];
+                case 6:
                     console.log('Deletion action asked !');
                     return [4 /*yield*/, githubClient.deleteItem(commitMessage, itemOwner, itemRepository, itemPath)];
-                case 6:
-                    _b.sent();
-                    return [3 /*break*/, 7];
                 case 7:
+                    _b.sent();
+                    return [3 /*break*/, 8];
+                case 8:
                     console.log('Action executed !');
                     console.log('Exiting main !');
                     return [2 /*return*/];

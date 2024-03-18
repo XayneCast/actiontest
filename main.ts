@@ -47,8 +47,14 @@ async function main(): Promise<void> {
 			}
 			console.log(`Modification arguments retrieved !`);
 
+			const item: api.IGithubGetItemResponse = await githubClient.getItem(
+				itemOwner,
+				itemRepository,
+				itemPath
+			);
+
 			const dynamicContent = new io.DynamicContent(
-				itemPath,
+				item.data.content,
 				{
 					begin: variableStartTag,
 					end: variableStopTag
