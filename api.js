@@ -118,7 +118,7 @@ var GithubAPI = /** @class */ (function () {
      * @returns {string} The github resource path
     */
     GithubAPI.prototype.__createLink = function (ownerName, repositoryName, itemPath) {
-        return "".concat(GITHUB_API_VARIABLES.URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath); //Create the github resource path from the specified informations
+        return "".concat(GITHUB_API_VARIABLES.API_URL, "/repos/").concat(ownerName, "/").concat(repositoryName, "/contents/").concat(itemPath); //Create the github resource path from the specified informations
     };
     /**
      * @brief Get the requested unique identifier from the resource path

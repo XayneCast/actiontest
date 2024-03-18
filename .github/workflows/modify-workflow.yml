@@ -12,8 +12,6 @@ jobs:
     steps:
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
-    - name: 'Show dir'
-      run: 'ls'
     - name: 'Update changelog'
       uses: './'
       with:

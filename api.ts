@@ -103,7 +103,7 @@ class GithubAPI {
 	 * @returns {string} The github resource path
 	*/
 	private __createLink(ownerName: string, repositoryName: string, itemPath: string): string {
-		return `${GITHUB_API_VARIABLES.URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`; //Create the github resource path from the specified informations
+		return `${GITHUB_API_VARIABLES.API_URL}/repos/${ownerName}/${repositoryName}/contents/${itemPath}`; //Create the github resource path from the specified informations
 	}
 
 	/**
