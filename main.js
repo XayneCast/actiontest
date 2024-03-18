@@ -102,6 +102,7 @@ function main() {
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
                 case 4:
                     _b.sent();
+                    console.log("UPDATING CONTENT !");
                     return [3 /*break*/, 7];
                 case 5:
                     console.log('Deletion action asked !');

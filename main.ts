@@ -90,6 +90,8 @@ async function main(): Promise<void> {
 				itemPath
 			);
 
+			console.log("UPDATING CONTENT !");
+
 			break;
 		case 'DELETION':
 			console.log('Deletion action asked !');
