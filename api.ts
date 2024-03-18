@@ -114,7 +114,7 @@ class GithubAPI {
 	 * @returns {Promise<IGithubGetItemIdResponse>} The result of the get
 	*/
 	private async __getItemId(resourcePath: string): Promise<IGithubGetItemIdResponse> {
-		try { //Try to execute the next lines
+		//try { //Try to execute the next lines
 			const response: any = await axios.head(
 				resourcePath,
 				this._headers
@@ -126,7 +126,7 @@ class GithubAPI {
 				status: response.status,
 				sha: response.headers.etag.slice(3, -1)
 			}; //Return the unique identifier of the specified resource
-		} catch(error) { //Catch the possible error
+		/*} catch(error) { //Catch the possible error
 			console.log("GetItemId error ....");
 			console.log(JSON.stringify(error, null, 4));
 			switch(error.response.status) { //Handle the error status
@@ -137,7 +137,7 @@ class GithubAPI {
 				default : //If other unspecified status
 					throw new GithubAPIConnectionFailed(); //Throw connection error
 			}
-		}
+		}*/
 	}
 
 	/**
