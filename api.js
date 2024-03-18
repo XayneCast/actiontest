@@ -129,17 +129,32 @@ var GithubAPI = /** @class */ (function () {
     */
     GithubAPI.prototype.__getItemId = function (resourcePath) {
         return __awaiter(this, void 0, void 0, function () {
-            var response;
+            var response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1.default.head(resourcePath, this._headers)];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.head(resourcePath, this._headers)];
                     case 1:
                         response = _a.sent();
-                        console.log('HERE: ' + JSON.stringify(response, null, 4));
                         return [2 /*return*/, {
                                 status: response.status,
                                 sha: response.headers.etag.slice(3, -1)
                             }]; //Return the unique identifier of the specified resource
+                    case 2:
+                        error_1 = _a.sent();
+                        console.log("GetItemId error ....");
+                        console.log(JSON.stringify(error_1, null, 4));
+                        switch (error_1.response.status) { //Handle the error status
+                            case 403: //If 403 status
+                                throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
+                            case 404: //If 404 status
+                                throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
+                            default: //If other unspecified status
+                                throw new GithubAPIConnectionFailed(); //Throw connection error
+                        }
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -155,7 +170,7 @@ var GithubAPI = /** @class */ (function () {
     */
     GithubAPI.prototype.getItem = function (ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, response, error_1;
+            var resourcePath, response, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -177,10 +192,10 @@ var GithubAPI = /** @class */ (function () {
                                 }
                             }]; //Return the requested item
                     case 3:
-                        error_1 = _a.sent();
+                        error_2 = _a.sent();
                         console.log("ERROR ON GET ");
-                        console.log(JSON.stringify(error_1, null, 4));
-                        switch (error_1.response.status) { //Handle the error status
+                        console.log(JSON.stringify(error_2, null, 4));
+                        switch (error_2.response.status) { //Handle the error status
                             case 403: //If 403 status
                                 throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
                             case 404: //If 404 status
@@ -205,7 +220,7 @@ var GithubAPI = /** @class */ (function () {
     */
     GithubAPI.prototype.updateItem = function (messageContent, content, ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, data, options, error_2;
+            var resourcePath, data, options, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -235,9 +250,9 @@ var GithubAPI = /** @class */ (function () {
                         console.log("OK !");
                         return [3 /*break*/, 5];
                     case 4:
-                        error_2 = _a.sent();
-                        console.log(JSON.stringify(error_2));
-                        switch (error_2.response.status) { //Handle the error status
+                        error_3 = _a.sent();
+                        console.log(JSON.stringify(error_3));
+                        switch (error_3.response.status) { //Handle the error status
                             case 404: //If 404 status
                                 throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
                             case 409: //If 409 status
@@ -263,7 +278,7 @@ var GithubAPI = /** @class */ (function () {
     */
     GithubAPI.prototype.deleteItem = function (messageContent, ownerName, repositoryName, itemPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var resourcePath, data, options, error_3;
+            var resourcePath, data, options, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -293,8 +308,8 @@ var GithubAPI = /** @class */ (function () {
                         _a.sent(); //Request the deletion of the specified resource
                         return [3 /*break*/, 5];
                     case 4:
-                        error_3 = _a.sent();
-                        switch (error_3.response.status) { //Handle the error status
+                        error_4 = _a.sent();
+                        switch (error_4.response.status) { //Handle the error status
                             case 404: //If 404 status
                                 throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
                             case 409: //If 409 status
