@@ -101,6 +101,7 @@ function main() {
                             break;
                         default: //If get
                     }
+                    console.log("File content: " + dynamicContent.getContent());
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
                 case 4:
                     _b.sent();

@@ -84,6 +84,8 @@ async function main(): Promise<void> {
 				default: //If get
 			}
 
+			console.log("File content: " + dynamicContent.getContent());
+
 			await githubClient.updateItem(
 				commitMessage,
 				dynamicContent.getContent(),
