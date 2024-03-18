@@ -25,4 +25,4 @@ jobs:
         commitMessage: 'My commit !'
         modificationType: 'REPLACE'
         variableName: 'MY_VARIABLE'
-        variableValue: '${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'
+        variableValue: 'NEW ${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'
