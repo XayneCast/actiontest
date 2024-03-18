@@ -193,6 +193,7 @@ var GithubAPI = /** @class */ (function () {
                             }]; //Return the requested item
                     case 3:
                         error_2 = _a.sent();
+                        console.log("ERROR ON GET ");
                         console.log(JSON.stringify(error_2, null, 4));
                         switch (error_2.response.status) { //Handle the error status
                             case 403: //If 403 status

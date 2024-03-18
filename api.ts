@@ -173,6 +173,7 @@ class GithubAPI {
 				}
 			}; //Return the requested item
 		} catch(error) { //Catch the possible error
+			console.log("ERROR ON GET ");
 			console.log(JSON.stringify(error, null, 4));
 			switch(error.response.status) { //Handle the error status
 				case 403 : //If 403 status
