@@ -22,5 +22,7 @@ jobs:
         actionType: 'MODIFICATION'
         commitMessage: 'My commit !'
         modificationType: 'REPLACE'
+        variableStartTag: '<!--{{'
+        variableStopTag: '}}-->'
         variableName: 'MY_VARIABLE'
         variableValue: 'NEW ${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'

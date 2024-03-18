@@ -40,7 +40,7 @@ var io = require("./io.js"); //Import io module
 var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableName, variableValue, dynamicContent;
+        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableStartTag, variableStopTag, variableName, variableValue, dynamicContent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -74,6 +74,8 @@ function main() {
                     console.log('Modification action asked !');
                     console.log('Retrieving modification arguments ...');
                     modificationType = io.DynamicArguments.getParameter('modificationType');
+                    variableStartTag = io.DynamicArguments.getParameter('variableStartTag');
+                    variableStopTag = io.DynamicArguments.getParameter('variableStopTag');
                     variableName = io.DynamicArguments.getParameter('variableName');
                     variableValue = null;
                     if (modificationType !== 'REMOVE') {
@@ -81,8 +83,8 @@ function main() {
                     }
                     console.log("Modification arguments retrieved !");
                     dynamicContent = new io.DynamicContent(itemPath, {
-                        begin: '<!--{{ ',
-                        end: ' }}-->'
+                        begin: variableStartTag,
+                        end: variableStopTag
                     });
                     switch (modificationType) {
                         case 'SET':
@@ -102,7 +104,6 @@ function main() {
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
                 case 4:
                     _b.sent();
-                    console.log("UPDATING CONTENT !");
                     return [3 /*break*/, 7];
                 case 5:
                     console.log('Deletion action asked !');

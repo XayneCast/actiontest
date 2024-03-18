@@ -37,6 +37,8 @@ async function main(): Promise<void> {
 
 			console.log('Retrieving modification arguments ...');
 			const modificationType: ModificationType = io.DynamicArguments.getParameter('modificationType') as ModificationType;
+			const variableStartTag: string = io.DynamicArguments.getParameter('variableStartTag');
+			const variableStopTag: string = io.DynamicArguments.getParameter('variableStopTag');
 			const variableName: string = io.DynamicArguments.getParameter('variableName');
 			let variableValue: string = null;
 
@@ -48,8 +50,8 @@ async function main(): Promise<void> {
 			const dynamicContent = new io.DynamicContent(
 				itemPath,
 				{
-					begin: '<!--{{ ',
-					end: ' }}-->'
+					begin: variableStartTag,
+					end: variableStopTag
 				}
 			);
 
@@ -89,8 +91,6 @@ async function main(): Promise<void> {
 				itemRepository,
 				itemPath
 			);
-
-			console.log("UPDATING CONTENT !");
 
 			break;
 		case 'DELETION':

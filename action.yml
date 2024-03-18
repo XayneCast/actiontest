@@ -17,6 +17,10 @@ inputs:
     description: 'Message to display on the Github commit after performing the specified action type'
   modificationType:
     description: 'Modification type to perform on the specified variable'
+  variableStartTag:
+    description: 'Start tag to detect the start of a variable field'
+  variableStopTag:
+    description: 'Stop tag to detect the stop of a variable field'
   variableName:
     description: 'Name of the specified variable to update'
   variableValue:
