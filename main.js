@@ -40,7 +40,7 @@ var io = require("./io.js"); //Import io module
 var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, modificationType, variableStartTag, variableStopTag, variableName, variableValue, item, dynamicContent;
+        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, itemContent, modificationType, variableStartTag, variableStopTag, variableName, variableValue, item, dynamicContent;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -68,7 +68,8 @@ function main() {
                     console.log('Content action asked !');
                     return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
                 case 2:
-                    _b.sent();
+                    itemContent = _b.sent();
+                    io.DynamicArguments.setParameter('stepResult', itemContent.data.content);
                     return [3 /*break*/, 8];
                 case 3:
                     console.log('Modification action asked !');

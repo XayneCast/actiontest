@@ -66,14 +66,17 @@ class DynamicContent {
 }
 
 class DynamicArguments {
-	public static getParameter(argumentName: string): string {
-		const argumentValue: string | null =  process.env[`INPUT_${argumentName.replace(' ', '_').toUpperCase()}`] || null;
+	public static getParameter(parameterName: string): string {
+		const argumentValue: string | null =  process.env[`INPUT_${parameterName.replace(' ', '_').toUpperCase()}`] || null;
 
 		if(!argumentValue) {
-			throw new DynamicArgumentsRequiredArgumentNotSuppliedError(argumentName);
+			throw new DynamicArgumentsRequiredArgumentNotSuppliedError(parameterName);
 		}
 
 		return argumentValue;
+	}
+	public static setParameter(parameterName: string, parameterValue: string): void {
+		process.env[`OUTPUT_${parameterName.replace(' ', '_').toUpperCase()}`] = parameterValue;
 	}
 }
 

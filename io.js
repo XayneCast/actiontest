@@ -68,12 +68,15 @@ exports.DynamicContent = DynamicContent;
 var DynamicArguments = /** @class */ (function () {
     function DynamicArguments() {
     }
-    DynamicArguments.getParameter = function (argumentName) {
-        var argumentValue = process.env["INPUT_".concat(argumentName.replace(' ', '_').toUpperCase())] || null;
+    DynamicArguments.getParameter = function (parameterName) {
+        var argumentValue = process.env["INPUT_".concat(parameterName.replace(' ', '_').toUpperCase())] || null;
         if (!argumentValue) {
-            throw new DynamicArgumentsRequiredArgumentNotSuppliedError(argumentName);
+            throw new DynamicArgumentsRequiredArgumentNotSuppliedError(parameterName);
         }
         return argumentValue;
+    };
+    DynamicArguments.setParameter = function (parameterName, parameterValue) {
+        process.env["OUTPUT_".concat(parameterName.replace(' ', '_').toUpperCase())] = parameterValue;
     };
     return DynamicArguments;
 }());

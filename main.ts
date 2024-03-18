@@ -25,11 +25,13 @@ async function main(): Promise<void> {
 		case 'CONTENT':
 			console.log('Content action asked !');
 
-			await githubClient.getItem(
+			const itemContent: api.IGithubGetItemResponse = await githubClient.getItem(
 				itemOwner,
 				itemRepository,
 				itemPath
 			);
+
+			io.DynamicArguments.setParameter('stepResult', itemContent.data.content);
 
 			break;
 		case 'MODIFICATION':
