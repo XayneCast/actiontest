@@ -200,6 +200,8 @@ class GithubAPI {
 
 		const data: IGithubGetItemIdResponse = await this.__getItemId(resourcePath); //Get the last unique identifier for the requested github resource
 
+		console.log("SHA: " + data.sha);
+
 		const options: IGithubAPIContentOptions = {
 			owner: ownerName,
 			repo: repositoryName,
@@ -219,8 +221,10 @@ class GithubAPI {
 				options,
 				this._headers
 			); //Request the creation or the update of the specified resource
+
+			console.log("OK !");
 		} catch(error) { //Catch the possible error
-			console.log(JSON.stringify(error, null, 4));
+			console.log(JSON.stringify(error));
 			switch(error.response.status) { //Handle the error status
 				case 404 : //If 404 status
 					throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
