@@ -161,6 +161,9 @@ class GithubAPI {
 				this._headers
 			); //Request the content of the specified resource
 
+			console.log("OK RESPONSE RECEIVED !");
+			console.log(JSON.stringify(response, null, 4));
+
 			return {
 				status: response.status,
 				data: {

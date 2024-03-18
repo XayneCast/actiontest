@@ -181,6 +181,8 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(resourcePath, this._headers)];
                     case 2:
                         response = _a.sent();
+                        console.log("OK RESPONSE RECEIVED !");
+                        console.log(JSON.stringify(response, null, 4));
                         return [2 /*return*/, {
                                 status: response.status,
                                 data: {
