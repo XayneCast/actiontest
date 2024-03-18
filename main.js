@@ -89,6 +89,8 @@ function main() {
                         begin: variableStartTag,
                         end: variableStopTag
                     });
+                    console.log("VALUE: " + variableValue);
+                    console.log("START |" + variableStartTag + ": STOP |" + variableStopTag + "|");
                     console.log("File content: " + dynamicContent.getContent());
                     switch (modificationType) {
                         case 'SET':

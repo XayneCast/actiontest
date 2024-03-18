@@ -61,6 +61,9 @@ async function main(): Promise<void> {
 				}
 			);
 
+			console.log("VALUE: " + variableValue);
+			console.log("START |" + variableStartTag + ": STOP |" + variableStopTag + "|");
+
 			console.log("File content: " + dynamicContent.getContent());
 
 			switch(modificationType) {
