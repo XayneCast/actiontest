@@ -143,8 +143,6 @@ var GithubAPI = /** @class */ (function () {
                             }]; //Return the unique identifier of the specified resource
                     case 2:
                         error_1 = _a.sent();
-                        console.log("GetItemId error ....");
-                        console.log(JSON.stringify(error_1, null, 4));
                         switch (error_1.response.status) { //Handle the error status
                             case 403: //If 403 status
                                 throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
@@ -181,8 +179,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(resourcePath, this._headers)];
                     case 2:
                         response = _a.sent();
-                        console.log("OK RESPONSE RECEIVED !");
-                        console.log(JSON.stringify(response, null, 4));
                         return [2 /*return*/, {
                                 status: response.status,
                                 data: {
@@ -193,8 +189,6 @@ var GithubAPI = /** @class */ (function () {
                             }]; //Return the requested item
                     case 3:
                         error_2 = _a.sent();
-                        console.log("ERROR ON GET ");
-                        console.log(JSON.stringify(error_2, null, 4));
                         switch (error_2.response.status) { //Handle the error status
                             case 403: //If 403 status
                                 throw new GithubAPIResourceForbiddenError(resourcePath); //Throw resource forbidden error
@@ -228,7 +222,6 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, this.__getItemId(resourcePath)];
                     case 1:
                         data = _a.sent();
-                        console.log("SHA: " + data.sha);
                         options = {
                             owner: ownerName,
                             repo: repositoryName,
@@ -247,11 +240,9 @@ var GithubAPI = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.put(resourcePath, options, this._headers)];
                     case 3:
                         _a.sent(); //Request the creation or the update of the specified resource
-                        console.log("OK !");
                         return [3 /*break*/, 5];
                     case 4:
                         error_3 = _a.sent();
-                        console.log(JSON.stringify(error_3));
                         switch (error_3.response.status) { //Handle the error status
                             case 404: //If 404 status
                                 throw new GithubAPIResourceNotFoundError(resourcePath); //Throw resource not found error
