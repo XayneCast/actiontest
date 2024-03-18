@@ -27,7 +27,7 @@ class DynamicContent {
 	}
 
 	private __buildTag(name: string): string {
-		return `${this._variableTag.begin}${name}${this._variableTag.end}`;
+		return `${this._variableTag.begin} ${name} ${this._variableTag.end}`;
 	}
 
 	public setVariable(name: string, value: string): void {

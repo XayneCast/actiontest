@@ -37,7 +37,7 @@ var DynamicContent = /** @class */ (function () {
         this._variableTag = variableTag;
     }
     DynamicContent.prototype.__buildTag = function (name) {
-        return "".concat(this._variableTag.begin).concat(name).concat(this._variableTag.end);
+        return "".concat(this._variableTag.begin, " ").concat(name, " ").concat(this._variableTag.end);
     };
     DynamicContent.prototype.setVariable = function (name, value) {
         var tag = this.__buildTag(name);
