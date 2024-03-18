@@ -48,7 +48,7 @@ function main() {
                     console.log('Retrieving action arguments ...');
                     secretToken = io.DynamicArguments.getParameter('secretToken');
                     itemOwner = io.DynamicArguments.getParameter('itemOwner');
-                    itemRepository = io.DynamicArguments.getParameter('itemOwner');
+                    itemRepository = io.DynamicArguments.getParameter('itemRepository');
                     itemPath = io.DynamicArguments.getParameter('itemPath');
                     actionType = io.DynamicArguments.getParameter('actionType');
                     commitMessage = io.DynamicArguments.getParameter('commitMessage');

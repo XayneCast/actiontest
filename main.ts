@@ -10,7 +10,7 @@ async function main(): Promise<void> {
 	console.log('Retrieving action arguments ...');
 	const secretToken: string = io.DynamicArguments.getParameter('secretToken');
 	const itemOwner: string = io.DynamicArguments.getParameter('itemOwner');
-	const itemRepository: string = io.DynamicArguments.getParameter('itemOwner');
+	const itemRepository: string = io.DynamicArguments.getParameter('itemRepository');
 	const itemPath: string = io.DynamicArguments.getParameter('itemPath');
 	const actionType: ActionType = io.DynamicArguments.getParameter('actionType') as ActionType;
 	const commitMessage: string = io.DynamicArguments.getParameter('commitMessage');
