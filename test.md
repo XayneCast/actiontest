@@ -1,1 +1,1 @@
-<!--{{ MY_VARIABLE }}-->
+test.md
