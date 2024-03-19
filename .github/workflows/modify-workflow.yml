@@ -43,5 +43,5 @@ jobs:
     needs: build
     steps:
       - env:
-        OUTPUT1: ${{needs.build.outputs.value}}
+          OUTPUT1: ${{needs.build.outputs.value}}
         run: echo "$OUTPUT1"
