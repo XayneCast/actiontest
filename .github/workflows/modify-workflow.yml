@@ -10,7 +10,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     permissions: 'write-all'
     outputs:
-      outputContent: ${{ steps.modifyContent.outputs.value }}
+      outputContent: ${{ steps.modifyContent.outputs.result }}
     steps:
     - id: step1
       run: echo "value=world" >> "$GITHUB_OUTPUT"
