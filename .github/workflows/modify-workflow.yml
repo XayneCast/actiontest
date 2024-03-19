@@ -9,6 +9,8 @@ jobs:
   build:
     runs-on: 'ubuntu-latest'
     permissions: 'write-all'
+    outputs:
+      outputContent: ${{ steps.modifyContent.outputs.value }}
     steps:
     - name: Summary
       run: |
@@ -21,6 +23,7 @@ jobs:
         } >> $GITHUB_STEP_SUMMARY
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
+    - id: 'modifyContent'
     - name: 'Update changelog'
       uses: './'
       with:
@@ -36,4 +39,4 @@ jobs:
         variableName: 'MY_VARIABLE'
         variableValue: 'NEW ${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'
     - name: 'Show output'
-      run: echo "Test" << "$OUTPUT_stepResult"
+      run: echo 'VALUE:' >> "${{build.modifyContent.outputs.value}}"

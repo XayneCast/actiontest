@@ -112,7 +112,7 @@ function main() {
                     return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
                 case 5:
                     _b.sent();
-                    io.DynamicArguments.setParameter("output", dynamicContent.getContent());
+                    io.DynamicArguments.setParameter("value", dynamicContent.getContent());
                     return [3 /*break*/, 8];
                 case 6:
                     console.log('Deletion action asked !');

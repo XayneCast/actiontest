@@ -107,7 +107,7 @@ async function main(): Promise<void> {
 				itemPath
 			);
 
-			io.DynamicArguments.setParameter("output", dynamicContent.getContent());
+			io.DynamicArguments.setParameter("value", dynamicContent.getContent());
 
 			break;
 		case 'DELETION':
