@@ -74,7 +74,9 @@ function main() {
                     dynamicContent.removeVariable(variableName);
                     break;
                 default: //If get
+                    console.log('TRYING GET !\n');
                     result = dynamicContent.getVariable(variableName);
+                    console.log("RESULT: ".concat(result));
             }
             if (actionType !== 'GET') {
                 result = dynamicContent.getContent();

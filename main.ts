@@ -56,7 +56,10 @@ async function main(): Promise<void> {
 
 			break;
 		default: //If get
+			console.log('TRYING GET !\n');
 			result = dynamicContent.getVariable(variableName);
+
+			console.log(`RESULT: ${result}`);
 	}
 
 	if(actionType !== 'GET') {
