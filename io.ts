@@ -80,9 +80,13 @@ class DynamicArguments {
 		return argumentValue;
 	}
 	public static setParameter(parameterName: string, parameterValue: string): void {
-		fs.appendFileSync(process.env['GITHUB_OUTPUT'], `${parameterName.replace(' ', '_').toUpperCase()}=${parameterValue}`, {
-			encoding: 'utf8'
-		});
+		fs.writeFileSync(
+			process.env['GITHUB_OUTPUT'],
+			`${parameterName.replace(' ', '_').toUpperCase()}=${parameterValue}`,
+			{
+				encoding: 'utf-8',
+			}
+		);
 	}
 }
 

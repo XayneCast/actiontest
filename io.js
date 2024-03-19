@@ -77,8 +77,8 @@ var DynamicArguments = /** @class */ (function () {
         return argumentValue;
     };
     DynamicArguments.setParameter = function (parameterName, parameterValue) {
-        fs.appendFileSync(process.env['GITHUB_OUTPUT'], "".concat(parameterName.replace(' ', '_').toUpperCase(), "=").concat(parameterValue), {
-            encoding: 'utf8'
+        fs.writeFileSync(process.env['GITHUB_OUTPUT'], "".concat(parameterName.replace(' ', '_').toUpperCase(), "=").concat(parameterValue), {
+            encoding: 'utf-8',
         });
     };
     return DynamicArguments;
