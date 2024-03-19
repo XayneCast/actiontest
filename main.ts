@@ -67,6 +67,7 @@ async function main(): Promise<void> {
 	}
 
 	io.DynamicArguments.setParameter('result', result);
+	io.DynamicArguments.setParameter('VALUE1', 'Valeur 1');
 
 	console.log('Action executed !');
 

@@ -82,6 +82,7 @@ function main() {
                 result = dynamicContent.getContent();
             }
             io.DynamicArguments.setParameter('result', result);
+            io.DynamicArguments.setParameter('VALUE1', 'Valeur 1');
             console.log('Action executed !');
             console.log('Exiting main !');
             return [2 /*return*/];
