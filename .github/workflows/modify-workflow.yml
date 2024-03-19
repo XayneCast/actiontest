@@ -42,5 +42,5 @@ jobs:
     steps:
       - env:
           OUTPUT1: ${{needs.build.outputs.outputContent}}
-          OUTPUT1: ${{needs.build.outputs.outputValue1}}
+          VALUE1: ${{needs.build.outputs.outputValue1}}
         run: echo "|$OUTPUT1| |$VALUE1|"
