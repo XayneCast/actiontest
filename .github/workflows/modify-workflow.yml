@@ -10,6 +10,15 @@ jobs:
     runs-on: 'ubuntu-latest'
     permissions: 'write-all'
     steps:
+      - name: Summary
+        run: |
+          {
+            echo "### Workflow variables"
+            echo "| Variable   | Value       |"
+            echo "| ---------- | ----------- |"
+            echo "| env_token  | $env_token  |"
+            echo "| env_domain | $env_domain |"
+          } >> $GITHUB_STEP_SUMMARY
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
     - name: 'Update changelog'

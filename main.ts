@@ -107,6 +107,8 @@ async function main(): Promise<void> {
 				itemPath
 			);
 
+			io.DynamicArguments.setParameter("output", dynamicContent.getContent());
+
 			break;
 		case 'DELETION':
 			console.log('Deletion action asked !');
