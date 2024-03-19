@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 class DynamicArgumentsError extends Error {
 	constructor(errorMessage: string) {
 		super(errorMessage);
@@ -76,7 +78,9 @@ class DynamicArguments {
 		return argumentValue;
 	}
 	public static setParameter(parameterName: string, parameterValue: string): void {
-		process.env[`OUTPUT_${parameterName.replace(' ', '_').toUpperCase()}`] = parameterValue;
+		fs.appendFileSync(process.env['GITHUB_OUTPUT'], `${parameterName.replace(' ', '_').toUpperCase()}=${parameterValue}`, {
+			encoding: 'utf8'
+		});
 	}
 }
 

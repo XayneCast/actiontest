@@ -16,6 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DynamicArguments = exports.DynamicContent = void 0;
+var fs = require("fs");
 var DynamicArgumentsError = /** @class */ (function (_super) {
     __extends(DynamicArgumentsError, _super);
     function DynamicArgumentsError(errorMessage) {
@@ -76,7 +77,9 @@ var DynamicArguments = /** @class */ (function () {
         return argumentValue;
     };
     DynamicArguments.setParameter = function (parameterName, parameterValue) {
-        process.env["OUTPUT_".concat(parameterName.replace(' ', '_').toUpperCase())] = parameterValue;
+        fs.appendFileSync(process.env['GITHUB_OUTPUT'], "".concat(parameterName.replace(' ', '_').toUpperCase(), "=").concat(parameterValue), {
+            encoding: 'utf8'
+        });
     };
     return DynamicArguments;
 }());
