@@ -11,7 +11,6 @@ jobs:
     permissions: 'write-all'
     outputs:
       outputContent: ${{ steps.modifyContent.outputs.value }}
-      outputTest: ${{ steps.step1.outputs.value }}
     steps:
     - id: step1
       run: echo "value=world" >> "$GITHUB_OUTPUT"
@@ -30,13 +29,8 @@ jobs:
       name: 'Update changelog'
       uses: './'
       with:
-        secretToken: '${{ secrets.GITHUB_TOKEN }}'
-        itemOwner: 'XayneCast'
-        itemRepository: 'actiontest'
-        itemPath: 'test.md'
-        actionType: 'MODIFICATION'
-        commitMessage: 'My commit !'
-        modificationType: 'SET'
+        dynamicContent: '<!--{{ MY_VARIABLE }}-->TEST<!--{{ MY_VARIABLE }}-->'
+        actionType: 'GET'
         variableStartTag: '<!--{{'
         variableStopTag: '}}-->'
         variableName: 'MY_VARIABLE'
@@ -47,5 +41,4 @@ jobs:
     steps:
       - env:
           OUTPUT1: ${{needs.build.outputs.outputContent}}
-          OUTPUT2: ${{needs.build.outputs.outputTest}}
-        run: echo "|$OUTPUT1| |$OUTPUT2|"
+        run: echo "|$OUTPUT1|"

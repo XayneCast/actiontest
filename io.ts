@@ -1,5 +1,7 @@
 import * as fs from 'fs';
 
+type DynamicActionType = 'GET' | 'SET' | 'REPLACE' | 'INSERT' | 'REMOVE';
+
 class DynamicArgumentsError extends Error {
 	constructor(errorMessage: string) {
 		super(errorMessage);
@@ -85,6 +87,7 @@ class DynamicArguments {
 }
 
 export { //Export the necessary data, classes and functions
+	DynamicActionType,
 	DynamicContent,
 	DynamicArguments
 };

@@ -3,20 +3,10 @@ author: 'jeabapLANG'
 description: 'Automatically updates a changelog with the latest changes made to a repository'
 
 inputs:
-  secretToken:
-    description: 'Token used to perform the live operations on Github'
-  itemOwner:
-    description: 'Owner of the repository to perform the live operations on Github'
-  itemRepository:
-    description: 'Name of the repository to perform the live operations on Github'
-  itemPath:
-    description: 'Path of the content to perform the live Operations on Github'
+  dynamicContent:
+    description: 'Dynamic content to update the variables from'
   actionType:
-    description: 'Type of action to perform on Github'
-  commitMessage:
-    description: 'Message to display on the Github commit after performing the specified action type'
-  modificationType:
-    description: 'Modification type to perform on the specified variable'
+    description: 'Type of action to perform on a dynamic content'
   variableStartTag:
     description: 'Start tag to detect the start of a variable field'
   variableStopTag:

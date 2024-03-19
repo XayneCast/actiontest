@@ -37,94 +37,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var io = require("./io.js"); //Import io module
-var api = require("./api.js"); //Import api module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var secretToken, itemOwner, itemRepository, itemPath, actionType, commitMessage, githubClient, _a, itemContent, modificationType, variableStartTag, variableStopTag, variableName, variableValue, item, dynamicContent;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    console.log('Entering main ...');
-                    console.log('Retrieving action arguments ...');
-                    secretToken = io.DynamicArguments.getParameter('secretToken');
-                    itemOwner = io.DynamicArguments.getParameter('itemOwner');
-                    itemRepository = io.DynamicArguments.getParameter('itemRepository');
-                    itemPath = io.DynamicArguments.getParameter('itemPath');
-                    actionType = io.DynamicArguments.getParameter('actionType');
-                    commitMessage = io.DynamicArguments.getParameter('commitMessage');
-                    console.log("Action arguments retrieved !");
-                    console.log('Creating Github API connection');
-                    githubClient = new api.GithubAPI(secretToken);
-                    console.log('Github API connection created !');
-                    console.log('Processing action type ...');
-                    _a = actionType;
-                    switch (_a) {
-                        case 'CONTENT': return [3 /*break*/, 1];
-                        case 'MODIFICATION': return [3 /*break*/, 3];
-                        case 'DELETION': return [3 /*break*/, 6];
-                    }
-                    return [3 /*break*/, 8];
-                case 1:
-                    console.log('Content action asked !');
-                    return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
-                case 2:
-                    itemContent = _b.sent();
-                    io.DynamicArguments.setParameter('stepResult', itemContent.data.content);
-                    return [3 /*break*/, 8];
-                case 3:
-                    console.log('Modification action asked !');
-                    console.log('Retrieving modification arguments ...');
-                    modificationType = io.DynamicArguments.getParameter('modificationType');
-                    variableStartTag = io.DynamicArguments.getParameter('variableStartTag');
-                    variableStopTag = io.DynamicArguments.getParameter('variableStopTag');
-                    variableName = io.DynamicArguments.getParameter('variableName');
-                    variableValue = null;
-                    if (modificationType !== 'REMOVE') {
-                        variableValue = io.DynamicArguments.getParameter('variableValue');
-                    }
-                    console.log("Modification arguments retrieved !");
-                    return [4 /*yield*/, githubClient.getItem(itemOwner, itemRepository, itemPath)];
-                case 4:
-                    item = _b.sent();
-                    dynamicContent = new io.DynamicContent(item.data.content, {
-                        begin: variableStartTag,
-                        end: variableStopTag
-                    });
-                    console.log("VALUE: " + variableValue);
-                    console.log("START |" + variableStartTag + ": STOP |" + variableStopTag + "|");
-                    console.log("File content: " + dynamicContent.getContent());
-                    switch (modificationType) {
-                        case 'SET':
-                            dynamicContent.setVariable(variableName, variableValue);
-                            break;
-                        case 'REPLACE':
-                            dynamicContent.replaceVariable(variableName, variableValue);
-                            break;
-                        case 'INSERT':
-                            dynamicContent.insertVariable(variableName, variableValue);
-                            break;
-                        case 'REMOVE':
-                            dynamicContent.removeVariable(variableName);
-                            break;
-                        default: //If get
-                    }
-                    console.log("File content after: " + dynamicContent.getContent());
-                    return [4 /*yield*/, githubClient.updateItem(commitMessage, dynamicContent.getContent(), itemOwner, itemRepository, itemPath)];
-                case 5:
-                    _b.sent();
-                    io.DynamicArguments.setParameter("value", dynamicContent.getContent());
-                    return [3 /*break*/, 8];
-                case 6:
-                    console.log('Deletion action asked !');
-                    return [4 /*yield*/, githubClient.deleteItem(commitMessage, itemOwner, itemRepository, itemPath)];
-                case 7:
-                    _b.sent();
-                    return [3 /*break*/, 8];
-                case 8:
-                    console.log('Action executed !');
-                    console.log('Exiting main !');
-                    return [2 /*return*/];
+        var actionType, variableStartTag, variableStopTag, variableName, variableValue, dynamicContent, result;
+        return __generator(this, function (_a) {
+            console.log('Entering main ...');
+            console.log('Retrieving action arguments ...');
+            actionType = io.DynamicArguments.getParameter('actionType');
+            console.log("Action arguments retrieved !");
+            console.log('Retrieving modification arguments ...');
+            variableStartTag = io.DynamicArguments.getParameter('variableStartTag');
+            variableStopTag = io.DynamicArguments.getParameter('variableStopTag');
+            variableName = io.DynamicArguments.getParameter('variableName');
+            variableValue = null;
+            if (actionType !== 'REMOVE') {
+                variableValue = io.DynamicArguments.getParameter('variableValue');
             }
+            dynamicContent = new io.DynamicContent('', {
+                begin: variableStartTag,
+                end: variableStopTag
+            });
+            result = '';
+            console.log('Processing action type ...');
+            switch (actionType) {
+                case 'SET':
+                    dynamicContent.setVariable(variableName, variableValue);
+                    break;
+                case 'REPLACE':
+                    dynamicContent.replaceVariable(variableName, variableValue);
+                    break;
+                case 'INSERT':
+                    dynamicContent.insertVariable(variableName, variableValue);
+                    break;
+                case 'REMOVE':
+                    dynamicContent.removeVariable(variableName);
+                    break;
+                default: //If get
+                    result = dynamicContent.getVariable(variableName);
+            }
+            if (actionType !== 'GET') {
+                result = dynamicContent.getContent();
+            }
+            io.DynamicArguments.setParameter('result', result);
+            console.log('Action executed !');
+            console.log('Exiting main !');
+            return [2 /*return*/];
         });
     });
 }
