@@ -24,7 +24,7 @@ jobs:
     - name: 'Perform checkout'
       uses: 'actions/checkout@v2'
     - id: 'modifyContent'
-    - name: 'Update changelog'
+      name: 'Update changelog'
       uses: './'
       with:
         secretToken: '${{ secrets.GITHUB_TOKEN }}'
