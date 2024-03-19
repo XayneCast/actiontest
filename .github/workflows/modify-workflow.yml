@@ -11,7 +11,10 @@ jobs:
     permissions: 'write-all'
     outputs:
       outputContent: ${{ steps.modifyContent.outputs.value }}
+      outputTest: ${{ steps.step1.outputs.value }}
     steps:
+    - id: step1
+      run: echo "value=world" >> "$GITHUB_OUTPUT"
     - name: Summary
       run: |
         {
@@ -43,5 +46,6 @@ jobs:
     needs: build
     steps:
       - env:
-          OUTPUT1: ${{needs.build.outputs.value}}
-        run: echo "$OUTPUT1"
+          OUTPUT1: ${{needs.build.outputs.outputContent}}
+          OUTPUT2: ${{needs.build.outputs.outputTest}}
+        run: echo "|$OUTPUT1| |$OUTPUT2|"
