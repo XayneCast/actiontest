@@ -39,14 +39,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var io = require("./io.js"); //Import io module
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var actionType, text, variableStartTag, variableStopTag, variableName, variableValue, dynamicContent, result;
+        var actionType, payload, variableStartTag, variableStopTag, variableName, variableValue, dynamicContent, result;
         return __generator(this, function (_a) {
             console.log('Entering main ...');
             console.log('Retrieving action arguments ...');
             actionType = io.DynamicArguments.getParameter('actionType');
             console.log("Action arguments retrieved !");
             console.log('Retrieving modification arguments ...');
-            text = io.DynamicArguments.getParameter('dynamicContent');
+            payload = io.DynamicArguments.getParameter('payload');
             variableStartTag = io.DynamicArguments.getParameter('variableStartTag');
             variableStopTag = io.DynamicArguments.getParameter('variableStopTag');
             variableName = io.DynamicArguments.getParameter('variableName');
@@ -54,7 +54,7 @@ function main() {
             if (actionType !== 'REMOVE') {
                 variableValue = io.DynamicArguments.getParameter('variableValue');
             }
-            dynamicContent = new io.DynamicContent(text, {
+            dynamicContent = new io.DynamicContent(payload, {
                 begin: variableStartTag,
                 end: variableStopTag
             });
