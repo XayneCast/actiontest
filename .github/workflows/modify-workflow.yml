@@ -39,4 +39,4 @@ jobs:
         variableName: 'MY_VARIABLE'
         variableValue: 'NEW ${{ github.event.commits[0].author.name }} ${{ github.event.commits[0].message }}'
     - name: 'Show output'
-      run: echo 'VALUE:' >> "${{build.modifyContent.outputs.value}}"
+      run: echo 'VALUE:' >> "${{modifyContent.outputs.value}}"
