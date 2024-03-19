@@ -29,7 +29,7 @@ jobs:
       name: 'Update changelog'
       uses: './'
       with:
-        dynamicContent: '<!--{{ MY_VARIABLE }}-->TEST<!--{{ MY_VARIABLE }}-->'
+        text: '<!--{{ MY_VARIABLE }}-->TEST<!--{{ MY_VARIABLE }}-->'
         actionType: 'GET'
         variableStartTag: '<!--{{'
         variableStopTag: '}}-->'

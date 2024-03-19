@@ -8,6 +8,7 @@ async function main(): Promise<void> {
 	console.log(`Action arguments retrieved !`);
 
 	console.log('Retrieving modification arguments ...');
+	const text: string = io.DynamicArguments.getParameter('dynamicContent');
 	const variableStartTag: string = io.DynamicArguments.getParameter('variableStartTag');
 	const variableStopTag: string = io.DynamicArguments.getParameter('variableStopTag');
 	const variableName: string = io.DynamicArguments.getParameter('variableName');
@@ -18,7 +19,7 @@ async function main(): Promise<void> {
 	}
 
 	const dynamicContent = new io.DynamicContent(
-		'',
+		text,
 		{
 			begin: variableStartTag,
 			end: variableStopTag
